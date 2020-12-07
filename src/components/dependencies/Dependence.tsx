@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
-import { find } from 'lodash';
+import find from 'lodash/find';
 import Context from '../../context';
 import styles from './Dependence.less';
 import { Gantt } from '../../types';

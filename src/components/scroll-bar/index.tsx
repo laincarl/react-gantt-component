@@ -1,5 +1,5 @@
 import React, { useContext, useCallback, useState, useRef } from 'react';
-import { useLockFn } from 'ahooks';
+import { usePersistFn } from 'ahooks';
 import { observer } from 'mobx-react-lite';
 import Context from '../../context';
 import styles from './index.less';
@@ -15,7 +15,7 @@ const ScrollBar: React.FC = () => {
     left: 0,
     translateX: 0,
   });
-  const handleMouseMove = useLockFn(async (event: MouseEvent) => {
+  const handleMouseMove = usePersistFn((event: MouseEvent) => {
     const distance = event.clientX - positionRef.current.left;
     // TODO 调整倍率
     store.translateX =

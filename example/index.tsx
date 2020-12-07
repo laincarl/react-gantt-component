@@ -1,7 +1,8 @@
 import 'react-app-polyfill/ie11';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import GanttComponent from '../src';
+import GanttComponent from '../.';
+import '../dist/react-gantt-component.cjs.development.css'
 
 const App = () => {
   return (
@@ -9,15 +10,21 @@ const App = () => {
     <GanttComponent
       data={[{
         name: '一个名称',
+        startDate: '2020-10-01',
+        endDate: '2020-10-08',
+        collapsed: false,
         children: [{
-          name: '一个名称'
+          startDate: '2020-10-01',
+          endDate: '2020-10-08',
+          name: '一个名称',
+          collapsed: false
         }]
       }]}
       columns={[{
         name: 'name',
         label: '名称',
       }]}
-      onUpdate={() => {
+      onUpdate={async () => {
         return true
       }}
     />

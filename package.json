@@ -63,6 +63,7 @@
     "@types/react-dom": "^17.0.0",
     "babel-loader": "^8.2.2",
     "husky": "^4.3.4",
+    "identity-obj-proxy": "^3.0.0",
     "less": "^3.12.2",
     "less-loader": "^7.1.0",
     "postcss": "^8.1.14",

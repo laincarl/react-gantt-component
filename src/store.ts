@@ -3,7 +3,9 @@
 /* eslint-disable no-underscore-dangle */
 import { createRef } from 'react';
 import { observable, computed, action, runInAction } from 'mobx';
-import { debounce, find, throttle } from 'lodash';
+import debounce from 'lodash/debounce';
+import find from 'lodash/find';
+import throttle from 'lodash/throttle';
 import dayjs, { Dayjs } from 'dayjs';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
@@ -75,7 +77,7 @@ class GanttStore {
     this.bodyWidth = bodyWidth;
   }
 
-  _wheelTimer: NodeJS.Timeout | undefined;
+  _wheelTimer: number | undefined;
 
   scrollTimer: number | undefined;
 
@@ -421,6 +423,7 @@ class GanttStore {
     // 初始化当前时间
     let curDate = dayjs(translateAmp);
     const dateMap = new Map<string, Gantt.MajorAmp>();
+    const dates: Gantt.MajorAmp[] = [];
 
     // 对可视区域内的时间进行迭代
     while (curDate.isBetween(translateAmp - 1, endAmp + 1)) {
@@ -438,6 +441,11 @@ class GanttStore {
           startDate: start,
           endDate: end,
         });
+        dates.push({
+          label: majorKey,
+          startDate: start,
+          endDate: end,
+        });
       }
 
       // 获取下次迭代的时间
@@ -445,7 +453,7 @@ class GanttStore {
       curDate = getNextDate(start);
     }
 
-    return this.majorAmp2Px([...dateMap.values()]);
+    return this.majorAmp2Px(dates);
   }
 
   majorAmp2Px(ampList: Gantt.MajorAmp[]) {
@@ -571,7 +579,7 @@ class GanttStore {
     // 初始化当前时间
     let curDate = dayjs(startAmp);
     const dateMap = new Map<string, Gantt.MinorAmp>();
-
+    const dates: Gantt.MinorAmp[] = [];
     while (curDate.isBetween(startAmp - 1, endAmp + 1)) {
       const minorKey = getMinorKey(curDate);
 
@@ -583,12 +591,17 @@ class GanttStore {
           startDate: start,
           endDate: end,
         });
+        dates.push({
+          label: minorKey.split('-').pop() as string,
+          startDate: start,
+          endDate: end,
+        });
       }
 
       curDate = getNextDate(start);
     }
 
-    return this.minorAmp2Px([...dateMap.values()]);
+    return this.minorAmp2Px(dates);
   }
 
   startXRectBar = (startX: number) => {
@@ -844,7 +857,7 @@ class GanttStore {
       this.scrolling = true;
       this.translateX += event.deltaX;
     }
-    this._wheelTimer = setTimeout(() => {
+    this._wheelTimer = window.setTimeout(() => {
       this.scrolling = false;
     }, 100);
   };
