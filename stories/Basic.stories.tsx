@@ -1,9 +1,9 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import GanttComponent, { GanttProps } from '../src';
+import Gantt, { GanttProps } from '../src';
 const meta: Meta = {
   title: 'Welcome',
-  component: GanttComponent,
+  component: Gantt,
   argTypes: {
     children: {
       control: {
@@ -20,7 +20,7 @@ export default meta;
 
 const Template: Story<GanttProps> = () =>
   <div style={{ width: '100%', height: 500 }}>
-    <GanttComponent
+    <Gantt
       data={[{
         name: '一个名称',
         startDate: '2020-10-01',

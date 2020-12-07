@@ -1,36 +1,36 @@
 import { Dayjs } from 'dayjs';
 
 export namespace Gantt {
-  interface Major {
+  export interface Major {
     width: number;
     left: number;
     label: string;
   }
-  interface MajorAmp {
+  export interface MajorAmp {
     label: string;
     startDate: Dayjs;
     endDate: Dayjs;
   }
-  interface Minor {
+  export interface Minor {
     width: number;
     left: number;
     label: string;
     isWeek: boolean;
     key: string;
   }
-  interface MinorAmp {
+  export interface MinorAmp {
     label: string;
     startDate: Dayjs;
     endDate: Dayjs;
   }
-  type Sight = 'day' | 'week' | 'month' | 'quarter' | 'halfYear';
-  type MoveType = 'left' | 'right' | 'move' | 'create';
-  interface SightConfig {
+  export type Sight = 'day' | 'week' | 'month' | 'quarter' | 'halfYear';
+  export type MoveType = 'left' | 'right' | 'move' | 'create';
+  export interface SightConfig {
     type: Sight;
     label: string;
     value: number;
   }
-  interface Bar {
+  export interface Bar {
     label: string;
     width: number;
     translateX: number;
@@ -47,7 +47,7 @@ export namespace Gantt {
     _childrenCount: number;
     _parent?: Item;
   }
-  interface Item {
+  export interface Item {
     startDate: string | null;
     endDate: string | null;
     collapsed: boolean;
@@ -61,7 +61,7 @@ export namespace Gantt {
     _index?: number;
     [key: string]: any;
   }
-  interface Column {
+  export interface Column {
     width?: number;
     minWidth?: number;
     maxWidth?: number;
@@ -70,7 +70,7 @@ export namespace Gantt {
     label: string;
     render?: (item: Item) => React.ReactNode;
   }
-  interface Dependence {
+  export interface Dependence {
     from: string;
     to: string;
   }
