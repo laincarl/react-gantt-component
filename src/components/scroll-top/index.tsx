@@ -1,18 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
-// import { BackTop } from 'choerodon-ui';
 import Context from '../../context';
-
-const Divider: React.FC = () => {
+import styles from './index.less';
+const ScrollTop: React.FC = () => {
   const { store } = useContext(Context);
   const { scrollTop } = store;
+  const handleClick = useCallback(() => {
+    if (store.mainElementRef.current) {
+      store.mainElementRef.current.scrollTop = 0;
+    }
+  }, []);
   if (scrollTop <= 100 || !store.mainElementRef.current) {
     return null;
   }
   return (
-    // <BackTop className={styles.scroll_top} target={() => store.mainElementRef.current as HTMLElement}>
-    <div />
-    // </BackTop>
+    <div className={styles.scroll_top} onClick={handleClick}>
+      <div />
+    </div>
   );
 };
-export default observer(Divider);
+export default observer(ScrollTop);
