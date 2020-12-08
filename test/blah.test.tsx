@@ -1,12 +1,12 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Default as Basic } from '../stories/Basic.stories';
+import Gantt from '../src';
 
 describe('Basic', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(
-      <Basic
+      <Gantt
         data={[
           {
             name: '一个名称',
