@@ -96,7 +96,7 @@ const TableRows = () => {
                       expandIcon({
                         level: bar._depth,
                         collapsed: bar._collapsed,
-                        onClick: event => {
+                        onClick: (event) => {
                           event.stopPropagation();
                           store.setRowCollapse(bar.task, !bar._collapsed);
                         },
@@ -105,7 +105,7 @@ const TableRows = () => {
                       <RowToggler
                         level={bar._depth}
                         collapsed={bar._collapsed}
-                        onClick={event => {
+                        onClick={(event) => {
                           event.stopPropagation();
                           store.setRowCollapse(bar.task, !bar._collapsed);
                         }}

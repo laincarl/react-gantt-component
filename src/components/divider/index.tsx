@@ -57,7 +57,7 @@ const Divider: React.FC = () => {
         <div
           className={styles['icon-wrapper']}
           role="none"
-          onMouseDown={e => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
           onClick={handleClick}
         >
           <i

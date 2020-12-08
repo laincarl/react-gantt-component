@@ -143,9 +143,7 @@ class GanttStore {
   isRestDay = isRestDay;
 
   getStartDate() {
-    return dayjs()
-      .subtract(10, 'day')
-      .toString();
+    return dayjs().subtract(10, 'day').toString();
   }
 
   setIsRestDay(func: (date: string) => boolean) {
@@ -277,21 +275,14 @@ class GanttStore {
 
   getTranslateXByDate(date: string) {
     return Math.floor(
-      dayjs(date)
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .valueOf() / this.pxUnitAmp
+      dayjs(date).hour(0).minute(0).second(0).valueOf() / this.pxUnitAmp
     );
   }
 
   @computed get todayTranslateX() {
     return Math.floor(
-      dayjs(new Date().valueOf())
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .valueOf() / this.pxUnitAmp
+      dayjs(new Date().valueOf()).hour(0).minute(0).second(0).valueOf() /
+        this.pxUnitAmp
     );
   }
 
@@ -346,7 +337,7 @@ class GanttStore {
       0
     );
     const restWidth = this.tableWidth - totalColumnWidth;
-    return this.columns.map(column => {
+    return this.columns.map((column) => {
       if (column.width) {
         return column.width;
       }
@@ -456,7 +447,7 @@ class GanttStore {
 
   majorAmp2Px(ampList: Gantt.MajorAmp[]) {
     const { pxUnitAmp } = this;
-    const list = ampList.map(item => {
+    const list = ampList.map((item) => {
       const { startDate } = item;
       const { endDate } = item;
       const { label } = item;
@@ -513,11 +504,7 @@ class GanttStore {
           return date.startOf('day');
         },
         week() {
-          return date
-            .weekday(1)
-            .hour(0)
-            .minute(0)
-            .second(0);
+          return date.weekday(1).hour(0).minute(0).second(0);
         },
         month() {
           return date.startOf('month');
@@ -541,11 +528,7 @@ class GanttStore {
           return start.endOf('day');
         },
         week() {
-          return start
-            .weekday(7)
-            .hour(23)
-            .minute(59)
-            .second(59);
+          return start.weekday(7).hour(23).minute(59).second(59);
         },
         month() {
           return start.endOf('month');
@@ -622,11 +605,7 @@ class GanttStore {
       if (date.weekday() === 0) {
         date = date.add(-1, 'week');
       }
-      const left =
-        date
-          .weekday(1)
-          .startOf('day')
-          .valueOf() / this.pxUnitAmp;
+      const left = date.weekday(1).startOf('day').valueOf() / this.pxUnitAmp;
       const width = (7 * 24 * 60 * 60 * 1000 - 1000) / this.pxUnitAmp;
 
       return {
@@ -659,15 +638,9 @@ class GanttStore {
 
   minorAmp2Px(ampList: Gantt.MinorAmp[]): Gantt.Minor[] {
     const { pxUnitAmp } = this;
-    const list = ampList.map(item => {
-      const startDate = item.startDate
-        .hour(0)
-        .minute(0)
-        .second(0);
-      const endDate = item.endDate
-        .hour(23)
-        .minute(59)
-        .second(59);
+    const list = ampList.map((item) => {
+      const startDate = item.startDate.hour(0).minute(0).second(0);
+      const endDate = item.endDate.hour(23).minute(59).second(59);
 
       const { label } = item;
       const left = Math.ceil(startDate.valueOf() / pxUnitAmp);
@@ -752,11 +725,7 @@ class GanttStore {
           date = date.add(-1, 'week');
         }
 
-        const left =
-          date
-            .weekday(1)
-            .startOf('day')
-            .valueOf() / pxUnitAmp;
+        const left = date.weekday(1).startOf('day').valueOf() / pxUnitAmp;
         const width = (7 * 24 * 60 * 60 * 1000 - 1000) / pxUnitAmp;
 
         return {
@@ -882,7 +851,7 @@ class GanttStore {
     };
   }
 
-  handleMouseMove = debounce(event => {
+  handleMouseMove = debounce((event) => {
     if (!this.isPointerPress) {
       this.showSelectionBar(event);
     }

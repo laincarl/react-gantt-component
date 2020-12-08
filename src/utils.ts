@@ -72,17 +72,9 @@ export function getMoveStep(
   };
 
   const getWeekStep = () => {
-    let endDate = startDate
-      .weekday(1)
-      .hour(0)
-      .minute(0)
-      .second(0);
+    let endDate = startDate.weekday(1).hour(0).minute(0).second(0);
     if ((isLeft && isShrink) || (!isLeft && !isShrink)) {
-      endDate = endDate
-        .weekday(7)
-        .hour(23)
-        .minute(59)
-        .second(59);
+      endDate = endDate.weekday(7).hour(23).minute(59).second(59);
     }
 
     let step = (7 * 24 * 60 * 60 * 1000) / pxUnitAmp;
@@ -153,7 +145,7 @@ export function getMaxRange(bar: Gantt.Bar) {
         maxTranslateX = Math.max(translateX + width, maxTranslateX);
       }
       if (current.task.children && current.task.children.length > 0) {
-        current.task.children.forEach(t => {
+        current.task.children.forEach((t) => {
           if (t._bar) {
             temp.push(t._bar);
           }
@@ -181,7 +173,7 @@ export function transverseData(
       current.endDate = current[endDateKey] || '';
       current.collapsed = current.collapsed || false;
       if (current.children && current.children.length > 0) {
-        current.children.forEach(t => {
+        current.children.forEach((t) => {
           if (t) {
             temp.push(t);
           }

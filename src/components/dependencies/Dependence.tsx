@@ -12,8 +12,8 @@ const Dependence: React.FC<DependenceProps> = ({ data }) => {
   const { store } = useContext(Context);
   const { from, to } = data;
   const barList = store.getBarList;
-  const fromBar = find(barList, bar => bar.task.issueId === from);
-  const toBar = find(barList, bar => bar.task.issueId === to);
+  const fromBar = find(barList, (bar) => bar.task.issueId === from);
+  const toBar = find(barList, (bar) => bar.task.issueId === to);
   if (!fromBar || !toBar) {
     return null;
   }
