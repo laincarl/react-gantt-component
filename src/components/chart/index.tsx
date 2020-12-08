@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useEffect, useRef } from 'react';
+import React, { useContext, useCallback, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import Hammer from 'hammerjs';
 import DragPresent from '../drag-present';
@@ -29,24 +29,21 @@ const Chart: React.FC = () => {
   const handleMouseLeave = useCallback(() => {
     store.handleMouseLeave();
   }, [store]);
-  const chartRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (chartRef.current) {
-      // @ts-ignore
-      chartElementRef.current = chartRef.current;
-      const chartHammer = new Hammer(chartRef.current);
+    const element = chartElementRef.current;
+    if (element) {
+      const chartHammer = new Hammer(element);
       store.setChartHammer(chartHammer);
-      // store.initDragScrollHammer(chartRef.current);
-      chartRef.current.addEventListener('wheel', store.handleWheel);
-      return () => {
-        chartRef.current?.removeEventListener('wheel', store.handleWheel);
-      };
+      // store.initDragScrollHammer(element);
+      element.addEventListener('wheel', store.handleWheel);
     }
-    return () => {};
+    return () => {
+      element && element.removeEventListener('wheel', store.handleWheel);
+    };
   }, [chartElementRef, store]);
   return (
     <div
-      ref={chartRef}
+      ref={chartElementRef}
       className={styles.chart}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}

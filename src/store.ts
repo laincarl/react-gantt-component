@@ -1,6 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-underscore-dangle */
 import { createRef } from 'react';
 import { observable, computed, action, runInAction } from 'mobx';
 import debounce from 'lodash/debounce';
@@ -369,12 +366,13 @@ class GanttStore {
     return height;
   }
 
+  // 1px对应的毫秒数
   @computed get pxUnitAmp() {
     return this.sightConfig.value * 1000;
   }
 
   /**
-   * 时间起始偏移量
+   * 当前开始时间毫秒数
    */
   @computed get translateAmp() {
     const { translateX } = this;

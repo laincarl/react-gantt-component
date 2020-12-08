@@ -10,10 +10,7 @@ const meta: Meta = {
         type: 'text',
       },
     },
-  },
-  parameters: {
-    controls: { expanded: true },
-  },
+  }
 };
 
 export default meta;
@@ -23,12 +20,12 @@ const Template: Story<GanttProps> = () =>
     <Gantt
       data={[{
         name: '一个名称',
-        startDate: '2020-10-01',
-        endDate: '2020-10-08',
+        startDate: null,
+        endDate: null,
         collapsed: false,
         children: [{
-          startDate: '2020-10-01',
-          endDate: '2020-10-08',
+          startDate: null,
+          endDate: null,
           name: '一个名称',
           collapsed: false
         }]
