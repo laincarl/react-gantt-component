@@ -100,7 +100,7 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
           aria-haspopup="true"
           aria-expanded="false"
           style={{
-            left: translateX,
+            left: translateX + 1,
             width: Math.ceil(width),
             transform: `translateY(${top}px)`,
             backgroundColor: '#7B90FF',

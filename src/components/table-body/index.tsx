@@ -128,6 +128,32 @@ const TableRows = () => {
   );
 };
 const ObserverTableRows = observer(TableRows);
+const TableBorders = () => {
+  const { store } = useContext(Context);
+  const { columns } = store;
+  const columnsWidth = store.getColumnsWidth;
+  const barList = store.getBarList;
+  if (barList.length === 0) {
+    return null;
+  }
+  return (
+    <div role="none" className={styles.border_row}>
+      {columns.map((column, index) => (
+        <div
+          key={column.name}
+          className={styles.cell}
+          style={{
+            width: columnsWidth[index],
+            minWidth: column.minWidth,
+            maxWidth: column.maxWidth,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+const ObserverTableBorders = observer(TableBorders);
+
 const TableBody: React.FC = () => {
   const { store } = useContext(Context);
   const handleMouseMove = useCallback(
@@ -150,6 +176,7 @@ const TableBody: React.FC = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
+      <ObserverTableBorders />
       <ObserverTableRows />
     </div>
   );
