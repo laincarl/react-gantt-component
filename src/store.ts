@@ -375,6 +375,9 @@ class GanttStore {
     return this.pxUnitAmp * clientWidth;
   }
 
+  getWidthByDate = (startDate: Dayjs, endDate: Dayjs) =>
+    (endDate.valueOf() - startDate.valueOf()) / this.pxUnitAmp;
+
   getMajorList(): Gantt.Major[] {
     const majorFormatMap: { [key in Gantt.Sight]: string } = {
       day: 'YYYY年MM月',

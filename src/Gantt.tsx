@@ -22,6 +22,7 @@ import ScrollTop from './components/scroll-top';
 import styles from './Gantt.less';
 import { Gantt } from './types';
 import { TABLE_INDENT } from './constants';
+import { Dayjs } from 'dayjs';
 
 const Body: React.FC = ({ children }) => {
   const { store } = useContext(Context);
@@ -65,6 +66,7 @@ export interface GanttProps {
 }
 export interface GanttRef {
   backToday: () => void;
+  getWidthByDate: (startDate: Dayjs, endDate: Dayjs) => number;
 }
 const GanttComponent: React.FC<GanttProps> = forwardRef(
   (
@@ -113,6 +115,7 @@ const GanttComponent: React.FC<GanttProps> = forwardRef(
       ref,
       (): GanttRef => ({
         backToday: () => store.scrollToToday(),
+        getWidthByDate: store.getWidthByDate,
       })
     );
     return (
