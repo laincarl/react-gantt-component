@@ -72,7 +72,7 @@ const Chart: React.FC = () => {
             <line stroke="#c6c6c6" strokeWidth="1px" y2="10" />
           </pattern>
         </defs>
-        {minorList.map((item) =>
+        {minorList.map(item =>
           item.isWeek ? (
             <g key={item.key} stroke="#f0f0f0">
               <path

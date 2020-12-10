@@ -125,7 +125,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
             />
             <DragResize
               className={classNames(styles['resize-handle'], styles.right)}
-              style={{ left: width + 2 }}
+              style={{ left: width + 1 }}
               onResize={handleResize}
               onResizeEnd={handleLeftResizeEnd}
               defaultSize={{
