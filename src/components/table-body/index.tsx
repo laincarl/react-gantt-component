@@ -19,6 +19,7 @@ const TableRows = () => {
         style={{
           textAlign: 'center',
           color: ' rgba(0,0,0,0.65)',
+          marginTop: 30,
         }}
       >
         暂无数据
