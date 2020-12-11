@@ -63,6 +63,7 @@ export interface GanttProps {
   renderBarThumb?: GanttContext['renderBarThumb'];
   onBarClick?: GanttContext['onBarClick'];
   tableCollapseAble?: GanttContext['tableCollapseAble'];
+  scrollTop?: GanttContext['scrollTop'];
 }
 export interface GanttRef {
   backToday: () => void;
@@ -88,6 +89,7 @@ const GanttComponent: React.FC<GanttProps> = forwardRef(
       onBarClick,
       tableCollapseAble = true,
       renderBarThumb,
+      scrollTop = true,
     },
     ref
   ) => {
@@ -132,6 +134,7 @@ const GanttComponent: React.FC<GanttProps> = forwardRef(
           onBarClick,
           tableCollapseAble,
           renderBarThumb,
+          scrollTop,
         }}
       >
         <Body>
@@ -148,7 +151,7 @@ const GanttComponent: React.FC<GanttProps> = forwardRef(
           {showBackToday && <TimeIndicator />}
           {showUnitSwitch && <TimeAxisScaleSelect />}
           <ScrollBar />
-          <ScrollTop />
+          {scrollTop && <ScrollTop />}
         </Body>
       </Context.Provider>
     );

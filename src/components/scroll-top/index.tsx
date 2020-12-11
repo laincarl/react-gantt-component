@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import Context from '../../context';
 import styles from './index.less';
 const ScrollTop: React.FC = () => {
-  const { store } = useContext(Context);
+  const { store, scrollTop: scrollTopConfig } = useContext(Context);
   const { scrollTop } = store;
   const handleClick = useCallback(() => {
     if (store.mainElementRef.current) {
@@ -14,7 +14,11 @@ const ScrollTop: React.FC = () => {
     return null;
   }
   return (
-    <div className={styles.scroll_top} onClick={handleClick}>
+    <div
+      className={styles.scroll_top}
+      style={scrollTopConfig instanceof Object ? scrollTopConfig : undefined}
+      onClick={handleClick}
+    >
       <div />
     </div>
   );

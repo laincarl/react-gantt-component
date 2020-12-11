@@ -32,6 +32,7 @@ export interface GanttContext {
   ) => React.ReactNode;
   onBarClick?: (item: Gantt.Item) => void;
   tableCollapseAble: boolean;
+  scrollTop: boolean | React.CSSProperties;
 }
 const context = createContext({} as GanttContext);
 export default context;
