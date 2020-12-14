@@ -79,6 +79,7 @@ const TableRows = () => {
                             i === bar._depth - 1,
                         })}
                         style={{
+                          top: -(rowHeight / 2) + 1,
                           left: tableIndent * i + 15,
                           width: tableIndent * 1.5 + 5,
                         }}
