@@ -28,3 +28,16 @@ storiesOf('basic usage', module)
       }}
     />
   </div>)
+  .add('rowHeight', () => <div style={{ width: '100%', height: 500 }}>
+    <Gantt
+      data={createData(1000)}
+      columns={[{
+        name: 'name',
+        label: '名称',
+      }]}
+      onUpdate={async () => {
+        return true
+      }}
+      rowHeight={50}
+    />
+  </div>)

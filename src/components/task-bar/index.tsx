@@ -6,7 +6,6 @@ import { usePersistFn } from 'ahooks';
 import Context from '../../context';
 import styles from './index.less';
 import { Gantt } from '../../types';
-import { ROW_HEIGHT } from '../../constants';
 import DragResize from '../drag-resize';
 
 interface TaskBarProps {
@@ -28,12 +27,12 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
     loading,
   } = data;
   // TODO 优化hover判断性能
-  const { selectionIndicatorTop } = store;
+  const { selectionIndicatorTop, rowHeight } = store;
   const showDragBar = useMemo(() => {
-    const baseTop = translateY - (translateY % ROW_HEIGHT);
+    const baseTop = translateY - (translateY % rowHeight);
     const isShow =
       selectionIndicatorTop >= baseTop &&
-      selectionIndicatorTop <= baseTop + ROW_HEIGHT;
+      selectionIndicatorTop <= baseTop + rowHeight;
     return isShow;
   }, [selectionIndicatorTop, translateY]);
   const themeColor = useMemo(() => {

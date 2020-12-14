@@ -4,12 +4,12 @@ import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import Context from '../../context';
 import styles from './index.less';
-import { ROW_HEIGHT, TOP_PADDING } from '../../constants';
+import { TOP_PADDING } from '../../constants';
 import RowToggler from './RowToggler';
 
 const TableRows = () => {
   const { store, onRow, tableIndent, expandIcon } = useContext(Context);
-  const { columns } = store;
+  const { columns, rowHeight } = store;
   const columnsWidth = store.getColumnsWidth;
   const barList = store.getBarList;
   const { count, start } = store.getVisibleRows;
@@ -46,8 +46,8 @@ const TableRows = () => {
             role="none"
             className={styles.row}
             style={{
-              height: ROW_HEIGHT,
-              top: (rowIndex + start) * ROW_HEIGHT + TOP_PADDING,
+              height: rowHeight,
+              top: (rowIndex + start) * rowHeight + TOP_PADDING,
             }}
             onClick={() => {
               onRow?.onClick(bar.task);

@@ -21,7 +21,7 @@ import Chart from './components/chart';
 import ScrollTop from './components/scroll-top';
 import styles from './Gantt.less';
 import { Gantt } from './types';
-import { TABLE_INDENT } from './constants';
+import { ROW_HEIGHT, TABLE_INDENT } from './constants';
 import { Dayjs } from 'dayjs';
 
 const Body: React.FC = ({ children }) => {
@@ -64,6 +64,7 @@ export interface GanttProps {
   onBarClick?: GanttContext['onBarClick'];
   tableCollapseAble?: GanttContext['tableCollapseAble'];
   scrollTop?: GanttContext['scrollTop'];
+  rowHeight?: number;
 }
 export interface GanttRef {
   backToday: () => void;
@@ -90,10 +91,11 @@ const GanttComponent: React.FC<GanttProps> = forwardRef(
       tableCollapseAble = true,
       renderBarThumb,
       scrollTop = true,
+      rowHeight = ROW_HEIGHT,
     },
     ref
   ) => {
-    const store = useMemo(() => new GanttStore(), []);
+    const store = useMemo(() => new GanttStore({ rowHeight }), [rowHeight]);
     useEffect(() => {
       store.setData(data, startDateKey, endDateKey);
     }, [data, endDateKey, startDateKey, store]);

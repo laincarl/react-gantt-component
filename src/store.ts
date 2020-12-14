@@ -11,12 +11,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
 import weekday from 'dayjs/plugin/weekday';
 import { Gantt } from './types';
-import {
-  ROW_HEIGHT,
-  HEADER_HEIGHT,
-  MIN_VIEW_RATE,
-  TOP_PADDING,
-} from './constants';
+import { HEADER_HEIGHT, MIN_VIEW_RATE, TOP_PADDING } from './constants';
 import { flattenDeep, transverseData } from './utils';
 
 dayjs.extend(weekday);
@@ -58,7 +53,7 @@ function isRestDay(date: string) {
   return [0, 6].includes(dayjs(date).weekday());
 }
 class GanttStore {
-  constructor() {
+  constructor({ rowHeight }: { rowHeight: number }) {
     this.width = 1320;
     this.height = 418;
     const sightConfig = viewTypeList[0];
@@ -72,6 +67,7 @@ class GanttStore {
     this.translateX = translateX;
     this.sightConfig = sightConfig;
     this.bodyWidth = bodyWidth;
+    this.rowHeight = rowHeight;
   }
 
   _wheelTimer: number | undefined;
@@ -133,6 +129,8 @@ class GanttStore {
   autoScrollPos: number = 0;
 
   clientX: number = 0;
+
+  rowHeight: number;
 
   onUpdate: (
     item: Gantt.Item,
@@ -363,7 +361,7 @@ class GanttStore {
 
   // 内容区滚动区域域高度
   @computed get bodyScrollHeight() {
-    let height = this.getBarList.length * ROW_HEIGHT + TOP_PADDING;
+    let height = this.getBarList.length * this.rowHeight + TOP_PADDING;
     if (height < this.bodyClientHeight) {
       height = this.bodyClientHeight;
     }
@@ -728,8 +726,8 @@ class GanttStore {
     const { pxUnitAmp, data } = this;
     const minStamp = 11 * pxUnitAmp;
     const height = 8;
-    const baseTop = TOP_PADDING + ROW_HEIGHT / 2 - height / 2;
-    const topStep = ROW_HEIGHT;
+    const baseTop = TOP_PADDING + this.rowHeight / 2 - height / 2;
+    const topStep = this.rowHeight;
 
     const dateTextFormat = (startX: number) =>
       dayjs(startX * pxUnitAmp).format('YYYY-MM-DD');
@@ -881,9 +879,9 @@ class GanttStore {
   @computed get getVisibleRows() {
     const visibleHeight = this.bodyClientHeight;
     // 多渲染几个，减少空白
-    const visibleRowCount = Math.ceil(visibleHeight / ROW_HEIGHT) + 10;
+    const visibleRowCount = Math.ceil(visibleHeight / this.rowHeight) + 10;
 
-    const start = Math.max(Math.ceil(this.scrollTop / ROW_HEIGHT) - 5, 0);
+    const start = Math.max(Math.ceil(this.scrollTop / this.rowHeight) - 5, 0);
     return {
       start,
       count: visibleRowCount,
@@ -907,13 +905,13 @@ class GanttStore {
       top: 0,
     };
     // 内容区高度
-    const contentHeight = this.getBarList.length * ROW_HEIGHT;
+    const contentHeight = this.getBarList.length * this.rowHeight;
     const offsetY = event.clientY - top + scrollTop;
     if (offsetY - contentHeight > TOP_PADDING) {
       this.showSelectionIndicator = false;
     } else {
       const top =
-        Math.floor((offsetY - TOP_PADDING) / ROW_HEIGHT) * ROW_HEIGHT +
+        Math.floor((offsetY - TOP_PADDING) / this.rowHeight) * this.rowHeight +
         TOP_PADDING;
       this.showSelectionIndicator = true;
       this.selectionIndicatorTop = top;
@@ -921,10 +919,10 @@ class GanttStore {
   }
 
   getHovered = (top: number) => {
-    const baseTop = top - (top % ROW_HEIGHT);
+    const baseTop = top - (top % this.rowHeight);
     const isShow =
       this.selectionIndicatorTop >= baseTop &&
-      this.selectionIndicatorTop <= baseTop + ROW_HEIGHT;
+      this.selectionIndicatorTop <= baseTop + this.rowHeight;
     return isShow;
   };
 

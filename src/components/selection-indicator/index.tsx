@@ -8,12 +8,12 @@ import styles from './index.less';
  */
 const SelectionIndicator: React.FC = () => {
   const { store } = useContext(Context);
-  const { showSelectionIndicator, selectionIndicatorTop } = store;
+  const { showSelectionIndicator, selectionIndicatorTop, rowHeight } = store;
   return showSelectionIndicator ? (
     <div
       className={styles['selection-indicator']}
       style={{
-        height: 28,
+        height: rowHeight,
         top: selectionIndicatorTop,
       }}
     />

@@ -4,7 +4,6 @@ import { usePersistFn } from 'ahooks';
 import Context from '../../context';
 import styles from './index.less';
 import { Gantt } from '../../types';
-import { ROW_HEIGHT } from '../../constants';
 import DragResize from '../drag-resize';
 
 interface TaskBarProps {
@@ -18,7 +17,7 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
   const triggerRef = useRef<HTMLDivElement>(null);
   const { translateY, translateX, width, dateTextFormat } = data;
   const [visible, setVisible] = useState(false);
-  const { translateX: viewTranslateX } = store;
+  const { translateX: viewTranslateX, rowHeight } = store;
   const top = translateY;
   const handleMouseEnter = useCallback(() => {
     if (data.stepGesture === 'moving') {
@@ -96,7 +95,8 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
         className={styles['task-row-trigger']}
         style={{
           left: viewTranslateX,
-          transform: `translateY(${top - (ROW_HEIGHT - barH) / 2}px`,
+          height: rowHeight,
+          transform: `translateY(${top - (rowHeight - barH) / 2}px`,
         }}
       />
       {visible && (
