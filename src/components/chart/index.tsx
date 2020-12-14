@@ -89,7 +89,7 @@ const Chart: React.FC = () => {
               />
             </g>
           ) : (
-            <g key={item.label} stroke="#f0f0f0">
+            <g key={item.key} stroke="#f0f0f0">
               <path
                 d={`M${item.left + 1}.5,0 L${item.left},${bodyScrollHeight}`}
               />

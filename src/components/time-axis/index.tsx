@@ -31,7 +31,7 @@ const TimeAxis: React.FC = () => {
       >
         {majorList.map(item => (
           <div
-            key={item.label}
+            key={item.key}
             className={styles.major}
             style={{ width: item.width, left: item.left }}
           >

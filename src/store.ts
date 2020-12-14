@@ -470,6 +470,7 @@ class GanttStore {
         label,
         left,
         width,
+        key: startDate.format('YYYY-MM-DD HH:mm:ss'),
       };
     });
     return list;

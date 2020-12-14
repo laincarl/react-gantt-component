@@ -42,6 +42,7 @@ const TableRows = () => {
         }
         return (
           <div
+            key={rowIndex}
             role="none"
             className={styles.row}
             style={{

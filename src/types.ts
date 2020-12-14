@@ -5,6 +5,7 @@ export namespace Gantt {
     width: number;
     left: number;
     label: string;
+    key: string;
   }
   export interface MajorAmp {
     label: string;
