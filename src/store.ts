@@ -202,12 +202,12 @@ class GanttStore {
     };
 
     const panMove = (event: HammerInput) => {
-      this.translateX = translateX - event.deltaX;
+      this.setTranslateX(translateX - event.deltaX);
     };
 
     const panEnd = (event: HammerInput) => {
       this.scrolling = false;
-      this.translateX = translateX - event.deltaX;
+      this.setTranslateX(translateX - event.deltaX);
     };
 
     hammer.on('panstart', panStart);
@@ -260,19 +260,23 @@ class GanttStore {
       this.tableWidth = this.width - this.viewWidth;
     }
   }
-
+  @action
+  setTranslateX(translateX: number) {
+    this.translateX = Math.max(translateX, 0);
+  }
   @action switchSight(type: Gantt.Sight) {
     const target = find(viewTypeList, { type });
     if (target) {
       this.sightConfig = target;
-      this.translateX =
-        dayjs(this.getStartDate()).valueOf() / (target.value * 1000);
+      this.setTranslateX(
+        dayjs(this.getStartDate()).valueOf() / (target.value * 1000)
+      );
     }
   }
 
   @action scrollToToday() {
     const translateX = this.todayTranslateX - this.viewWidth / 2;
-    this.translateX = translateX;
+    this.setTranslateX(translateX);
   }
 
   getTranslateXByDate(date: string) {
@@ -717,7 +721,7 @@ class GanttStore {
       translateX = this.translateX - diffX;
     }
 
-    this.translateX = translateX;
+    this.setTranslateX(translateX);
   }
 
   @computed get getBarList(): Gantt.Bar[] {
@@ -857,7 +861,7 @@ class GanttStore {
     // 水平滚动
     if (Math.abs(event.deltaX) > 0) {
       this.scrolling = true;
-      this.translateX = Math.max(this.translateX + event.deltaX, 0);
+      this.setTranslateX(this.translateX + event.deltaX);
     }
     this._wheelTimer = window.setTimeout(() => {
       this.scrolling = false;
