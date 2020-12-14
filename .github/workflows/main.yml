@@ -23,7 +23,8 @@ jobs:
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
-          
+          install-command: yarn --silent
+
       - name: Lint
         run: yarn lint
 
