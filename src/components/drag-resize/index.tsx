@@ -19,6 +19,7 @@ interface DragResizeProps extends React.HTMLProps<HTMLDivElement> {
     x: number;
   };
   onAutoScroll: (delta: number) => void;
+  reachEdge: (position: 'left' | 'right') => boolean;
   /* 点击就算开始 */
   clickStart?: boolean;
 }
@@ -33,6 +34,7 @@ const DragResize: React.FC<DragResizeProps> = ({
   defaultSize: { x: defaultX, width: defaultWidth },
   scroller,
   onAutoScroll,
+  reachEdge,
   clickStart = false,
   children,
   ...otherProps
@@ -43,7 +45,8 @@ const DragResize: React.FC<DragResizeProps> = ({
     onAutoScroll(delta);
   });
   const autoScroll = useMemo(
-    () => new AutoScroller({ scroller, onAutoScroll: handleAutoScroll }),
+    () =>
+      new AutoScroller({ scroller, onAutoScroll: handleAutoScroll, reachEdge }),
     [handleAutoScroll, scroller]
   );
   const positionRef = useRef({

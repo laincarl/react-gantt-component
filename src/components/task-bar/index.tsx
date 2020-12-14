@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
+import { usePersistFn } from 'ahooks';
 import Context from '../../context';
 import styles from './index.less';
 import { Gantt } from '../../types';
@@ -59,7 +60,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
   );
   const handleAutoScroll = useCallback(
     (delta: number) => {
-      store.translateX += delta;
+      store.setTranslateX(store.translateX + delta);
     },
     [store]
   );
@@ -71,6 +72,9 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
     },
     [data.task, onBarClick]
   );
+  const reachEdge = usePersistFn((position: 'left' | 'right') => {
+    return position === 'left' && store.translateX <= 0;
+  });
   return (
     <div
       role="none"
@@ -121,6 +125,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
               type="left"
               scroller={store.chartElementRef.current || undefined}
               onAutoScroll={handleAutoScroll}
+              reachEdge={reachEdge}
               onBeforeResize={handleBeforeResize('left')}
             />
             <DragResize
@@ -137,6 +142,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
               type="right"
               scroller={store.chartElementRef.current || undefined}
               onAutoScroll={handleAutoScroll}
+              reachEdge={reachEdge}
               onBeforeResize={handleBeforeResize('right')}
             />
             <div
@@ -158,6 +164,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
           type="move"
           scroller={store.chartElementRef.current || undefined}
           onAutoScroll={handleAutoScroll}
+          reachEdge={reachEdge}
           onBeforeResize={handleBeforeResize('move')}
         >
           {renderBar ? (

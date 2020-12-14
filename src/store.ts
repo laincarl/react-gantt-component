@@ -979,7 +979,7 @@ class GanttStore {
     { width, x }: { width: number; x: number }
   ) {
     barInfo.width = width;
-    barInfo.translateX = x;
+    barInfo.translateX = Math.max(x, 0);
     barInfo.stepGesture = 'moving';
   }
 

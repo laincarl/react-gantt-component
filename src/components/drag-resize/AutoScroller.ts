@@ -4,16 +4,19 @@ class AutoScroller {
     rate = 5,
     space = 50,
     onAutoScroll,
+    reachEdge,
   }: {
     scroller?: HTMLElement;
     rate?: number;
     space?: number;
     onAutoScroll: (delta: number) => void;
+    reachEdge: (position: 'left' | 'right') => boolean;
   }) {
     this.scroller = scroller || null;
     this.rate = rate;
     this.space = space;
     this.onAutoScroll = onAutoScroll;
+    this.reachEdge = reachEdge;
   }
 
   rate: number;
@@ -30,11 +33,15 @@ class AutoScroller {
 
   onAutoScroll: (delta: number) => void;
 
+  reachEdge: (position: 'left' | 'right') => boolean;
+
   handleDraggingMouseMove = (event: MouseEvent) => {
     this.clientX = event.clientX;
   };
-
   handleScroll = (position: 'left' | 'right') => {
+    if (this.reachEdge(position)) {
+      return;
+    }
     if (position === 'left') {
       this.autoScrollPos -= this.rate;
       this.onAutoScroll(-this.rate);
@@ -47,7 +54,6 @@ class AutoScroller {
   start = () => {
     this.autoScrollPos = 0;
     document.addEventListener('mousemove', this.handleDraggingMouseMove);
-    // 到最左或最右，停止滚动
     const scrollFunc = () => {
       if (this.scroller && this.clientX !== null) {
         if (
