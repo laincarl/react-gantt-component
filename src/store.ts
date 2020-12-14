@@ -856,7 +856,7 @@ class GanttStore {
     // 水平滚动
     if (Math.abs(event.deltaX) > 0) {
       this.scrolling = true;
-      this.translateX += event.deltaX;
+      this.translateX = Math.max(this.translateX + event.deltaX, 0);
     }
     this._wheelTimer = window.setTimeout(() => {
       this.scrolling = false;
