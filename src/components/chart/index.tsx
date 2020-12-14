@@ -75,9 +75,7 @@ const Chart: React.FC = () => {
         {minorList.map(item =>
           item.isWeek ? (
             <g key={item.key} stroke="#f0f0f0">
-              <path
-                d={`M${item.left + 1}.5,0 L${item.left},${bodyScrollHeight}`}
-              />
+              <path d={`M${item.left},0 L${item.left},${bodyScrollHeight}`} />
               <rect
                 fill="url(#repeat)"
                 opacity="0.5"
@@ -90,9 +88,7 @@ const Chart: React.FC = () => {
             </g>
           ) : (
             <g key={item.key} stroke="#f0f0f0">
-              <path
-                d={`M${item.left + 1}.5,0 L${item.left},${bodyScrollHeight}`}
-              />
+              <path d={`M${item.left},0 L${item.left},${bodyScrollHeight}`} />
             </g>
           )
         )}
