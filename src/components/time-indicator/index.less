@@ -1,4 +1,7 @@
-.move-to-today {
+@import '../../style/themes/index';
+@time-indicator-prefix-cls: ~'@{gantt-prefix}-time-indicator';
+
+.@{time-indicator-prefix-cls} {
   position: absolute;
   top: 0;
   left: 0;
@@ -19,7 +22,7 @@
   user-select: none;
   vertical-align: middle;
   cursor: pointer;
-  &.scrolling {
+  &-scrolling {
     opacity: 0
   }
 }

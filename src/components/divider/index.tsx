@@ -3,10 +3,11 @@ import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import useDragResize from '../../hooks/useDragResize';
 import Context from '../../context';
-import styles from './index.less';
+import './index.less';
 
 const Divider: React.FC = () => {
-  const { store, tableCollapseAble } = useContext(Context);
+  const { store, tableCollapseAble, prefixCls } = useContext(Context);
+  const prefixClsDivider = `${prefixCls}-divider`;
   const { tableWidth } = store;
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -33,8 +34,8 @@ const Divider: React.FC = () => {
   return (
     <div
       role="none"
-      className={classNames(styles.divider, {
-        [styles.divider_only]: !tableCollapseAble,
+      className={classNames(prefixClsDivider, {
+        [`${prefixClsDivider}_only`]: !tableCollapseAble,
       })}
       style={{ left: left - 1 }}
       onMouseDown={tableWidth === 0 ? undefined : handleMouseDown}
@@ -55,14 +56,14 @@ const Divider: React.FC = () => {
       <hr />
       {tableCollapseAble && (
         <div
-          className={styles['icon-wrapper']}
+          className={`${prefixClsDivider}-icon-wrapper`}
           role="none"
           onMouseDown={e => e.stopPropagation()}
           onClick={handleClick}
         >
           <i
-            className={classNames(styles.arrow, {
-              [styles.reverse]: left <= 0,
+            className={classNames(`${prefixClsDivider}-arrow`, {
+              [`${prefixClsDivider}-reverse`]: left <= 0,
             })}
           />
         </div>

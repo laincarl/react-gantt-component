@@ -2,10 +2,9 @@ import React, { useContext, useCallback, useState, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { usePersistFn } from 'ahooks';
 import Context from '../../context';
-import styles from './index.less';
 import { Gantt } from '../../types';
 import DragResize from '../drag-resize';
-
+import './index.less';
 interface TaskBarProps {
   data: Gantt.Bar;
 }
@@ -13,12 +12,13 @@ const barH = 8;
 let startX = 0;
 
 const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
-  const { store } = useContext(Context);
+  const { store, prefixCls } = useContext(Context);
   const triggerRef = useRef<HTMLDivElement>(null);
   const { translateY, translateX, width, dateTextFormat } = data;
   const [visible, setVisible] = useState(false);
   const { translateX: viewTranslateX, rowHeight } = store;
   const top = translateY;
+  const prefixClsInvalidTaskBar = `${prefixCls}-invalid-task-bar`;
   const handleMouseEnter = useCallback(() => {
     if (data.stepGesture === 'moving') {
       return;
@@ -92,7 +92,7 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
     >
       <div
         ref={triggerRef}
-        className={styles['task-row-trigger']}
+        className={prefixClsInvalidTaskBar}
         style={{
           left: viewTranslateX,
           height: rowHeight,
@@ -101,7 +101,7 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
       />
       {visible && (
         <div
-          className={styles.block}
+          className={`${prefixClsInvalidTaskBar}-block`}
           aria-haspopup="true"
           aria-expanded="false"
           style={{
@@ -113,7 +113,7 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
           }}
         >
           <div
-            className={styles.date}
+            className={`${prefixClsInvalidTaskBar}-date`}
             style={{
               right: Math.ceil(width + 6),
             }}
@@ -121,7 +121,7 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
             {dateTextFormat(translateX)}
           </div>
           <div
-            className={styles.date}
+            className={`${prefixClsInvalidTaskBar}-date`}
             style={{
               left: Math.ceil(width + 6),
             }}

@@ -1,4 +1,6 @@
-.time-axis-scale-select {
+@import '../../style/themes/index';
+
+.@{gantt-prefix}-time-axis-scale-select {
   .next-menu {
     position: relative;
     min-width: 150px;
@@ -33,7 +35,7 @@
   line-height: 36px
 }
 
-.shadow {
+.@{gantt-prefix}-shadow {
   position: absolute;
   top: 4px;
   right: 0;
@@ -43,11 +45,11 @@
   transition: box-shadow 0.5s
 }
 
-.shadow.scrolling {
+.@{gantt-prefix}-shadow.@{gantt-prefix}-scrolling {
   box-shadow: -3px 0 7px 0 #e5e5e5
 }
 
-.trigger {
+.@{gantt-prefix}-trigger {
   position: absolute;
   top: 0;
   right: 0;
@@ -66,15 +68,15 @@
   transition: color 0.2s
 }
 
-.trigger:hover {
+.@{gantt-prefix}-trigger:hover {
   color: #8c8c8c
 }
 
-.trigger:hover .text {
+.@{gantt-prefix}-trigger:hover .@{gantt-prefix}-text {
   color: #262626
 }
 
-.trigger .text {
+.@{gantt-prefix}-trigger .@{gantt-prefix}-text {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -133,7 +135,7 @@
   display: flex;
   align-items: center;
 
-  .selected_icon {
+  .@{gantt-prefix}-selected_icon {
     position: absolute;
     left: 12px;
     width: 20px;

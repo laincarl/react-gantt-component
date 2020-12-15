@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import Context from '../../context';
-import styles from './index.less';
+import './index.less';
 
 const TimeAxis: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const { store } = useContext(Context);
+  const { store, prefixCls } = useContext(Context);
+  const prefixClsTimeAxis = `${prefixCls}-time-axis`;
   const majorList = store.getMajorList();
   const minorList = store.getMinorList();
   useEffect(() => {
@@ -17,14 +18,14 @@ const TimeAxis: React.FC = () => {
   return (
     <div
       ref={ref}
-      className={styles['time-axis']}
+      className={prefixClsTimeAxis}
       style={{
         left: store.tableWidth,
         width: store.viewWidth,
       }}
     >
       <div
-        className={styles['render-chunk']}
+        className={`${prefixClsTimeAxis}-render-chunk`}
         style={{
           transform: `translateX(-${store.translateX}px`,
         }}
@@ -32,21 +33,21 @@ const TimeAxis: React.FC = () => {
         {majorList.map(item => (
           <div
             key={item.key}
-            className={styles.major}
+            className={`${prefixClsTimeAxis}-major`}
             style={{ width: item.width, left: item.left }}
           >
-            <div className={styles.label}>{item.label}</div>
+            <div className={`${prefixClsTimeAxis}-label`}>{item.label}</div>
           </div>
         ))}
         {minorList.map(item => (
           <div
             key={item.key}
-            className={classNames(styles.minor, {
+            className={classNames(`${prefixClsTimeAxis}-minor`, {
               // [styles.weekends]: item.isWeek,
             })}
             style={{ width: item.width, left: item.left }}
           >
-            <div className={styles.label}>{item.label}</div>
+            <div className={`${prefixClsTimeAxis}-label`}>{item.label}</div>
           </div>
         ))}
       </div>

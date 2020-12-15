@@ -2,13 +2,13 @@ import React, { useContext, useCallback, useState, useRef } from 'react';
 import { usePersistFn } from 'ahooks';
 import { observer } from 'mobx-react-lite';
 import Context from '../../context';
-import styles from './index.less';
+import './index.less';
 
 const ScrollBar: React.FC = () => {
-  const { store } = useContext(Context);
+  const { store, prefixCls } = useContext(Context);
   const { tableWidth, viewWidth } = store;
   const width = store.scrollBarWidth;
-
+  const prefixClsScrollBar = `${prefixCls}-scroll_bar`;
   const [resizing, setResizing] = useState(false);
   const positionRef = useRef({
     scrollLeft: 0,
@@ -43,7 +43,7 @@ const ScrollBar: React.FC = () => {
   return (
     <div
       role="none"
-      className={styles.scroll_bar}
+      className={prefixClsScrollBar}
       style={{ left: tableWidth, width: viewWidth }}
       onMouseDown={handleMouseDown}
     >
@@ -61,7 +61,7 @@ const ScrollBar: React.FC = () => {
         />
       )}
       <div
-        className={styles.thumb}
+        className={`${prefixClsScrollBar}-thumb`}
         style={{
           width,
           left: store.scrollLeft,

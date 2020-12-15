@@ -3,6 +3,7 @@ import GanttStore from './store';
 import { Gantt } from './types';
 
 export interface GanttContext {
+  prefixCls: string;
   store: GanttStore;
   getBarColor?: (
     item: Gantt.Item

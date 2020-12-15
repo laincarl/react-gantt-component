@@ -1,4 +1,7 @@
-.row-toggler {
+@import '../../style/themes/index';
+@row-toggler-prefix-cls: ~'@{gantt-prefix}-row-toggler';
+
+.@{row-toggler-prefix-cls} {
   width: 24px;
   display: flex;
   justify-content: center;
@@ -7,28 +10,28 @@
   cursor: pointer;
   position: relative;
   z-index: 5;
-}
 
-.row-toggler:hover {
-  color: #8c8c8c
-}
-
-.row-toggler > i {
-  width: 20px;
-  height: 20px;
-  background: white;
-
-  &[data-level='0'] {
-    border: 1px solid #e5e5e5;
-    border-radius: 2px;
+  &:hover {
+    color: #8c8c8c;
   }
-}
 
-.row-toggler > i > svg {
-  transition: transform 218ms;
-  fill: currentColor;  
-}
+  & > i {
+    width: 20px;
+    height: 20px;
+    background: white;
 
-.row-toggler.collapsed > i > svg {
-  transform: rotate(-90deg)
+    &[data-level='0'] {
+      border: 1px solid #e5e5e5;
+      border-radius: 2px;
+    }
+  }
+
+  & > i > svg {
+    transition: transform 218ms;
+    fill: currentColor;
+  }
+
+  &-collapsed > i > svg {
+    transform: rotate(-90deg)
+  }
 }

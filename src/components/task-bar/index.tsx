@@ -4,17 +4,18 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { usePersistFn } from 'ahooks';
 import Context from '../../context';
-import styles from './index.less';
 import { Gantt } from '../../types';
 import DragResize from '../drag-resize';
-
+import './index.less';
 interface TaskBarProps {
   data: Gantt.Bar;
 }
 const height = 8;
 
 const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
-  const { store, getBarColor, renderBar, onBarClick } = useContext(Context);
+  const { store, getBarColor, renderBar, onBarClick, prefixCls } = useContext(
+    Context
+  );
   const {
     width,
     translateX,
@@ -26,6 +27,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
     task,
     loading,
   } = data;
+  const prefixClsTaskBar = `${prefixCls}-task-bar`;
   // TODO 优化hover判断性能
   const { selectionIndicatorTop, rowHeight } = store;
   const showDragBar = useMemo(() => {
@@ -77,16 +79,16 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
   return (
     <div
       role="none"
-      className={classNames(styles['task-bar'], {
-        [styles['invalid-date-range']]: invalidDateRange,
-        [styles.overdue]: !invalidDateRange,
+      className={classNames(prefixClsTaskBar, {
+        [`${prefixClsTaskBar}-invalid-date-range`]: invalidDateRange,
+        [`${prefixClsTaskBar}-overdue`]: !invalidDateRange,
       })}
       style={{
         transform: `translate(${translateX}px, ${translateY}px)`,
       }}
       onClick={handleClick}
     >
-      {loading && <div className={styles.loading} />}
+      {loading && <div className={`${prefixClsTaskBar}-loading`} />}
       <div>
         {allowDrag && (
           <>
@@ -111,7 +113,10 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
               </div>
             )} */}
             <DragResize
-              className={classNames(styles['resize-handle'], styles.left)}
+              className={classNames(
+                `${prefixClsTaskBar}-resize-handle`,
+                `${prefixClsTaskBar}-resize-handle-left`
+              )}
               style={{ left: -14 }}
               onResize={handleResize}
               onResizeEnd={handleLeftResizeEnd}
@@ -128,7 +133,10 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
               onBeforeResize={handleBeforeResize('left')}
             />
             <DragResize
-              className={classNames(styles['resize-handle'], styles.right)}
+              className={classNames(
+                `${prefixClsTaskBar}-resize-handle`,
+                `${prefixClsTaskBar}-resize-handle-right`
+              )}
               style={{ left: width + 1 }}
               onResize={handleResize}
               onResizeEnd={handleLeftResizeEnd}
@@ -145,13 +153,16 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
               onBeforeResize={handleBeforeResize('right')}
             />
             <div
-              className={classNames(styles['resize-bg'], styles.compact)}
+              className={classNames(
+                `${prefixClsTaskBar}-resize-bg`,
+                `${prefixClsTaskBar}-resize-bg-compact`
+              )}
               style={{ width: width + 30, left: -14 }}
             />
           </>
         )}
         <DragResize
-          className={styles.bar}
+          className={`${prefixClsTaskBar}-bar`}
           onResize={handleResize}
           onResizeEnd={handleLeftResizeEnd}
           defaultSize={{
@@ -211,23 +222,28 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
               c-0.03256,-0.38255 -0.20896,-0.724 -0.47457,-0.97045
               c-0.26763,-0.24834 -0.62607,-0.40013 -1.01995,-0.40013z
             `}
-                className={styles.default}
               />
             </svg>
           )}
         </DragResize>
       </div>
-      {stepGesture !== 'moving' && (
-        <div className={styles.label} style={{ left: width + 45 }}>
+      {/* {stepGesture !== 'moving' && (
+        <div className={`${prefixClsTaskBar}-label`} style={{ left: width + 45 }}>
           {label}
         </div>
-      )}
+      )} */}
       {stepGesture === 'moving' && (
         <>
-          <div className={styles['date-text']} style={{ left: width + 16 }}>
+          <div
+            className={`${prefixClsTaskBar}-date-text`}
+            style={{ left: width + 16 }}
+          >
             {dateTextFormat(translateX + width)}
           </div>
-          <div className={styles['date-text']} style={{ right: width + 16 }}>
+          <div
+            className={`${prefixClsTaskBar}-date-text`}
+            style={{ right: width + 16 }}
+          >
             {dateTextFormat(translateX)}
           </div>
         </>

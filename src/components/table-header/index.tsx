@@ -1,29 +1,35 @@
 import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import Context from '../../context';
-import styles from './index.less';
+import './index.less';
 
 const TableHeader: React.FC = () => {
-  const { store } = useContext(Context);
+  const { store, prefixCls } = useContext(Context);
   const { columns, tableWidth } = store;
   const width = tableWidth;
   const columnsWidth = store.getColumnsWidth;
+  const prefixClsTableHeader = `${prefixCls}-table-header`;
   return (
-    <div className={styles.scrollable} style={{ width, height: 56 }}>
-      <div className={styles.head} style={{ width, height: 56 }}>
-        <div className={styles.row} style={{ height: 56 }}>
+    <div className={prefixClsTableHeader} style={{ width, height: 56 }}>
+      <div
+        className={`${prefixClsTableHeader}-head`}
+        style={{ width, height: 56 }}
+      >
+        <div className={`${prefixClsTableHeader}-row`} style={{ height: 56 }}>
           {columns.map((column, index) => (
             <div
               key={column.name}
-              className={styles.cell}
+              className={`${prefixClsTableHeader}-cell`}
               style={{
                 width: columnsWidth[index],
                 minWidth: column.minWidth,
                 maxWidth: column.maxWidth,
               }}
             >
-              <div className={styles['head-cell']}>
-                <span className={styles.ellipsis}>{column.label}</span>
+              <div className={`${prefixClsTableHeader}-head-cell`}>
+                <span className={`${prefixClsTableHeader}-ellipsis`}>
+                  {column.label}
+                </span>
               </div>
             </div>
           ))}

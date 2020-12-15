@@ -1,27 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
-import styles from './index.less';
 import { Gantt } from '../../types';
 import { getMaxRange } from '../../utils';
-
+import Context from '../../context';
+import './index.less';
 interface GroupBarProps {
   data: Gantt.Bar;
 }
 const height = 8;
 const GroupBar: React.FC<GroupBarProps> = ({ data }) => {
+  const { prefixCls } = useContext(Context);
   const { translateY } = data;
   const { translateX, width } = getMaxRange(data);
   return (
     <div
       role="none"
-      className={classNames(styles['group-bar'])}
+      className={classNames(`${prefixCls}-group-bar`)}
       style={{
         transform: `translate(${translateX}px, ${translateY}px)`,
       }}
     >
       <div>
-        <div className={styles.bar}>
+        <div className={`${prefixCls}-bar`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"
@@ -44,7 +45,6 @@ const GroupBar: React.FC<GroupBarProps> = ({ data }) => {
               c-0.03256,-0.38255 -0.20896,-0.724 -0.47457,-0.97045
               c-0.26763,-0.24834 -0.62607,-0.40013 -1.01995,-0.40013z
             `}
-              className={styles.default}
             />
           </svg>
         </div>

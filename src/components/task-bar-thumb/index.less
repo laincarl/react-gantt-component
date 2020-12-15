@@ -1,13 +1,26 @@
-.task-bar-thumb {
+@import '../../style/themes/index';
+@task-bar-thumb-prefix-cls: ~'@{gantt-prefix}-task-bar-thumb';
+
+.@{task-bar-thumb-prefix-cls} {
   position: absolute;
   cursor: pointer;
   white-space: nowrap;
   z-index: 2;
-  &.left {
+  overflow: hidden;
+  max-width: 200px;
+  color: #595959;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+  line-height: 16px;
+  user-select: none;
+  height: 16px;
+  font-size: 12px;
+
+  &-left {
     transform: translate(0);
   }
 
-  &.right {
+  &-right {
     transform: translate(-100%);
   }
 }

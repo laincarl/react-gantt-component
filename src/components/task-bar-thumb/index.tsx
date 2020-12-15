@@ -2,15 +2,15 @@ import React, { useContext, useMemo, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import Context from '../../context';
-import styles from './index.less';
 import { Gantt } from '../../types';
-
+import './index.less';
 interface TaskBarProps {
   data: Gantt.Bar;
 }
 
 const TaskBarThumb: React.FC<TaskBarProps> = ({ data }) => {
-  const { store, renderBarThumb } = useContext(Context);
+  const { store, renderBarThumb, prefixCls } = useContext(Context);
+  const prefixClsTaskBarThumb = `${prefixCls}-task-bar-thumb`;
   const { translateX: viewTranslateX, viewWidth } = store;
   const { translateX, translateY, label } = data;
   const type = useMemo(() => {
@@ -34,9 +34,9 @@ const TaskBarThumb: React.FC<TaskBarProps> = ({ data }) => {
   return (
     <div
       role="none"
-      className={classNames(styles['task-bar-thumb'], {
-        [styles.left]: type === 'left',
-        [styles.right]: type === 'right',
+      className={classNames(prefixClsTaskBarThumb, {
+        [`${prefixClsTaskBarThumb}-left`]: type === 'left',
+        [`${prefixClsTaskBarThumb}-right`]: type === 'right',
       })}
       style={{
         left,

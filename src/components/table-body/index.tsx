@@ -3,16 +3,19 @@ import React, { useContext, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import Context from '../../context';
-import styles from './index.less';
 import { TOP_PADDING } from '../../constants';
 import RowToggler from './RowToggler';
+import './index.less';
 
 const TableRows = () => {
-  const { store, onRow, tableIndent, expandIcon } = useContext(Context);
+  const { store, onRow, tableIndent, expandIcon, prefixCls } = useContext(
+    Context
+  );
   const { columns, rowHeight } = store;
   const columnsWidth = store.getColumnsWidth;
   const barList = store.getBarList;
   const { count, start } = store.getVisibleRows;
+  const prefixClsTableBody = `${prefixCls}-table-body`;
   if (barList.length === 0) {
     return (
       <div
@@ -44,7 +47,7 @@ const TableRows = () => {
           <div
             key={rowIndex}
             role="none"
-            className={styles.row}
+            className={`${prefixClsTableBody}-row`}
             style={{
               height: rowHeight,
               top: (rowIndex + start) * rowHeight + TOP_PADDING,
@@ -56,7 +59,7 @@ const TableRows = () => {
             {columns.map((column, index) => (
               <div
                 key={column.name}
-                className={styles.cell}
+                className={`${prefixClsTableBody}-cell`}
                 style={{
                   width: columnsWidth[index],
                   minWidth: column.minWidth,
@@ -72,12 +75,15 @@ const TableRows = () => {
                       <div
                         // eslint-disable-next-line react/no-array-index-key
                         key={i}
-                        className={classNames(styles['row-indentation'], {
-                          [styles['row-indentation-hidden']]:
-                            isLastChild && i === bar._depth - 2,
-                          [styles['row-indentation-both']]:
-                            i === bar._depth - 1,
-                        })}
+                        className={classNames(
+                          `${prefixClsTableBody}-row-indentation`,
+                          {
+                            [`${prefixClsTableBody}-row-indentation-hidden`]:
+                              isLastChild && i === bar._depth - 2,
+                            [`${prefixClsTableBody}-row-indentation-both`]:
+                              i === bar._depth - 1,
+                          }
+                        )}
                         style={{
                           top: -(rowHeight / 2) + 1,
                           left: tableIndent * i + 15,
@@ -106,6 +112,7 @@ const TableRows = () => {
                       })
                     ) : (
                       <RowToggler
+                        prefixCls={prefixCls}
                         level={bar._depth}
                         collapsed={bar._collapsed}
                         onClick={event => {
@@ -117,7 +124,7 @@ const TableRows = () => {
                   </div>
                 )}
                 {/* @ts-ignore */}
-                <span className={styles.ellipsis}>
+                <span className={`${prefixClsTableBody}-ellipsis`}>
                   {column.render
                     ? column.render(bar.task)
                     : bar.task[column.name]}
@@ -132,19 +139,20 @@ const TableRows = () => {
 };
 const ObserverTableRows = observer(TableRows);
 const TableBorders = () => {
-  const { store } = useContext(Context);
+  const { store, prefixCls } = useContext(Context);
   const { columns } = store;
   const columnsWidth = store.getColumnsWidth;
   const barList = store.getBarList;
   if (barList.length === 0) {
     return null;
   }
+  const prefixClsTableBody = `${prefixCls}-table-body`;
   return (
-    <div role="none" className={styles.border_row}>
+    <div role="none" className={`${prefixClsTableBody}-border_row`}>
       {columns.map((column, index) => (
         <div
           key={column.name}
-          className={styles.cell}
+          className={`${prefixClsTableBody}-cell`}
           style={{
             width: columnsWidth[index],
             minWidth: column.minWidth,
@@ -158,7 +166,7 @@ const TableBorders = () => {
 const ObserverTableBorders = observer(TableBorders);
 
 const TableBody: React.FC = () => {
-  const { store } = useContext(Context);
+  const { store, prefixCls } = useContext(Context);
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       event.persist();
@@ -169,9 +177,10 @@ const TableBody: React.FC = () => {
   const handleMouseLeave = useCallback(() => {
     store.handleMouseLeave();
   }, [store]);
+  const prefixClsTableBody = `${prefixCls}-table-body`;
   return (
     <div
-      className={styles.scrollable}
+      className={prefixClsTableBody}
       style={{
         width: store.tableWidth,
         height: store.bodyScrollHeight,

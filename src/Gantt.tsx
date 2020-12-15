@@ -19,10 +19,12 @@ import TimeIndicator from './components/time-indicator';
 import ScrollBar from './components/scroll-bar';
 import Chart from './components/chart';
 import ScrollTop from './components/scroll-top';
-import styles from './Gantt.less';
 import { Gantt } from './types';
 import { ROW_HEIGHT, TABLE_INDENT } from './constants';
 import { Dayjs } from 'dayjs';
+import './Gantt.less';
+
+const prefixCls = 'gantt';
 
 const Body: React.FC = ({ children }) => {
   const { store } = useContext(Context);
@@ -32,7 +34,7 @@ const Body: React.FC = ({ children }) => {
     store.syncSize(size);
   }, [size, store]);
   return (
-    <div className={styles.body} ref={ref}>
+    <div className={`${prefixCls}-body`} ref={ref}>
       {children}
     </div>
   );
@@ -125,6 +127,7 @@ const GanttComponent: React.FC<GanttProps> = forwardRef(
     return (
       <Context.Provider
         value={{
+          prefixCls,
           store,
           getBarColor,
           showBackToday,

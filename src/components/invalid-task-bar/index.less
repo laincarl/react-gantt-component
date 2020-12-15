@@ -1,41 +1,28 @@
-.task-row-trigger {
+@import '../../style/themes/index';
+@invalid-task-bar-prefix-cls: ~'@{gantt-prefix}-invalid-task-bar';
+
+.@{invalid-task-bar-prefix-cls} {
   position: absolute;
   left: 0;
   width: 100vw;
-}
 
-.task-row-trigger.loose {
-  height: 36px
-}
+  &-block {
+    position: absolute;
+    width: 16px;
+    min-width: 8px;
+    height: 9px;
+    left: 0;
+    border: 1px solid;
+    border-radius: 2px;
+    cursor: pointer;
+    z-index: 1
+  }
 
-.task-row-trigger.disabled {
-  cursor: not-allowed
-}
-
-.block {
-  position: absolute;
-  width: 16px;
-  min-width: 8px;
-  height: 9px;
-  left: 0;
-  border: 1px solid;
-  border-radius: 2px;
-  cursor: pointer;
-  z-index: 1
-}
-
-.block .date {
-  position: absolute;
-  top: -6px;
-  white-space: nowrap;
-  color: #262626;
-  font-size: 12px
-}
-
-.block.loose {
-  height: 16px
-}
-
-.block.loose .date {
-  top: -2px
+  &-date {
+    position: absolute;
+    top: -6px;
+    white-space: nowrap;
+    color: #262626;
+    font-size: 12px
+  }
 }

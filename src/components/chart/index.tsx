@@ -7,10 +7,10 @@ import BarThumbList from '../bar-thumb-list';
 import Today from '../today';
 import Dependencies from '../dependencies';
 import Context from '../../context';
-import styles from './index.less';
+import './index.less';
 
 const Chart: React.FC = () => {
-  const { store } = useContext(Context);
+  const { store, prefixCls } = useContext(Context);
   const {
     tableWidth,
     viewWidth,
@@ -44,7 +44,7 @@ const Chart: React.FC = () => {
   return (
     <div
       ref={chartElementRef}
-      className={styles.chart}
+      className={`${prefixCls}-chart`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
@@ -54,7 +54,7 @@ const Chart: React.FC = () => {
       }}
     >
       <svg
-        className={styles['chart-svg-renderer']}
+        className={`${prefixCls}-chart-svg-renderer`}
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
         width={viewWidth}
@@ -96,7 +96,7 @@ const Chart: React.FC = () => {
         <Dependencies />
       </svg>
       <div
-        className={styles['render-chunk']}
+        className={`${prefixCls}-render-chunk`}
         style={{
           height: bodyScrollHeight,
           transform: `translateX(-${translateX}px`,

@@ -5,7 +5,6 @@ module.exports = {
     config.plugins.push(
       postcss({
         minimize: true,
-        modules: true,
         use: {
           less: { javascriptEnabled: true }
         },
