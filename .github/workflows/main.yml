@@ -25,9 +25,6 @@ jobs:
           useLockFile: false
           install-command: yarn --silent
 
-      - name: Lint
-        run: yarn lint
-
       - name: Test
         run: yarn test --ci --coverage --maxWorkers=2
 

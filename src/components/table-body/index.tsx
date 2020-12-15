@@ -99,6 +99,7 @@ const TableRows = () => {
                       background: 'white',
                       zIndex: 9,
                       transform: 'translateX(-52%)',
+                      padding: 1,
                     }}
                   >
                     {expandIcon ? (
