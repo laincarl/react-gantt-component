@@ -244,7 +244,7 @@ class GanttStore {
   }
 
   @action initWidth() {
-    // this.tableWidth = this.columns.reduce((width, item) => width + item.width, 0);
+    this.tableWidth = 500;
     this.viewWidth = this.width - this.tableWidth;
     // 表盘宽度不能小于总宽度38%
     if (this.viewWidth < MIN_VIEW_RATE * this.width) {

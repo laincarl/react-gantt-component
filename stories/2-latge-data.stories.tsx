@@ -3,30 +3,14 @@ import Gantt from '../src';
 import createData from './utils/createData'
 
 export default {
-  title: 'Basic',
+  title: 'Large data',
   component: Gantt,
-  argTypes: {
-    rowHeight: { control: { type: 'range', min: 30, max: 100, step: 10 } },
-    tableIndent: { control: { type: 'range', min: 20, max: 100, step: 1 } },
-    unit: {
-      control: {
-        type: 'select',
-        options: [
-          'day',
-          'week',
-          'month',
-          'quarter',
-          'halfYear',
-        ],
-      }
-    },
-  },
 }
 
 const GanttStory = ({ data, ...args }) => (
   <div style={{ width: '100%', height: 500 }}>
     <Gantt
-      data={createData(100)}
+      data={createData(1000)}
       columns={[{
         name: 'name',
         label: '名称',
@@ -54,10 +38,4 @@ const GanttStory = ({ data, ...args }) => (
 export const Basic = GanttStory.bind({});
 
 Basic.args = {
-  rowHeight: 30,
-  tableIndent: 20,
-  showBackToday: true,
-  showUnitSwitch: true,
-  tableCollapseAble: true,
-  unit: 'day'
 }
