@@ -22,9 +22,8 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
     translateY,
     invalidDateRange,
     stepGesture,
-    label,
     dateTextFormat,
-    task,
+    record,
     loading,
   } = data;
   const prefixClsTaskBar = `${prefixCls}-task-bar`;
@@ -36,7 +35,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
       selectionIndicatorTop >= baseTop &&
       selectionIndicatorTop <= baseTop + rowHeight;
     return isShow;
-  }, [selectionIndicatorTop, translateY]);
+  }, [selectionIndicatorTop, translateY, rowHeight]);
   const themeColor = useMemo(() => {
     if (translateX + width >= dayjs().valueOf() / store.pxUnitAmp) {
       return ['#95DDFF', '#64C7FE'];
@@ -69,9 +68,9 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       e.stopPropagation();
-      onBarClick && onBarClick(data.task);
+      onBarClick && onBarClick(data.record);
     },
-    [data.task, onBarClick]
+    [data.record, onBarClick]
   );
   const reachEdge = usePersistFn((position: 'left' | 'right') => {
     return position === 'left' && store.translateX <= 0;
@@ -192,13 +191,13 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
             >
               <path
                 fill={
-                  task.backgroundColor ||
-                  (getBarColor && getBarColor(task).backgroundColor) ||
+                  record.backgroundColor ||
+                  (getBarColor && getBarColor(record).backgroundColor) ||
                   themeColor[0]
                 }
                 stroke={
-                  task.borderColor ||
-                  (getBarColor && getBarColor(task).borderColor) ||
+                  record.borderColor ||
+                  (getBarColor && getBarColor(record).borderColor) ||
                   themeColor[1]
                 }
                 d={`

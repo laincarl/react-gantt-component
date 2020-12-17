@@ -13,6 +13,7 @@ import weekday from 'dayjs/plugin/weekday';
 import { Gantt } from './types';
 import { HEADER_HEIGHT, MIN_VIEW_RATE, TOP_PADDING } from './constants';
 import { flattenDeep, transverseData } from './utils';
+import { GanttProps } from './Gantt';
 
 dayjs.extend(weekday);
 dayjs.extend(weekOfYear);
@@ -76,6 +77,8 @@ class GanttStore {
 
   @observable data: Gantt.Item[] = [];
 
+  @observable originData: Gantt.Record[] = [];
+
   @observable columns: Gantt.Column[] = [];
 
   // @observable dependencies: Gantt.Dependence[] = [{
@@ -132,11 +135,7 @@ class GanttStore {
 
   rowHeight: number;
 
-  onUpdate: (
-    item: Gantt.Item,
-    startDate: string,
-    endDate: string
-  ) => Promise<boolean> = () => Promise.resolve(true);
+  onUpdate: GanttProps['onUpdate'] = () => Promise.resolve(true);
 
   isRestDay = isRestDay;
 
@@ -151,9 +150,10 @@ class GanttStore {
   }
 
   @action
-  setData(data: Gantt.Item[], startDateKey: string, endDateKey: string) {
+  setData(data: Gantt.Record[], startDateKey: string, endDateKey: string) {
     this.startDateKey = startDateKey;
     this.endDateKey = endDateKey;
+    this.originData = data;
     this.data = transverseData(data, startDateKey, endDateKey);
   }
 
@@ -174,13 +174,7 @@ class GanttStore {
   }
 
   @action
-  setOnUpdate(
-    onUpdate: (
-      item: Gantt.Item,
-      startDate: string,
-      endDate: string
-    ) => Promise<boolean>
-  ) {
+  setOnUpdate(onUpdate: GanttProps['onUpdate']) {
     this.onUpdate = onUpdate;
   }
 
@@ -731,69 +725,8 @@ class GanttStore {
 
     const dateTextFormat = (startX: number) =>
       dayjs(startX * pxUnitAmp).format('YYYY-MM-DD');
-    const _dateFormat = (date: string) => {
-      if (!date) return '待设置';
-      return dayjs(date).format('YYYY年MM月DD日');
-    };
-
-    // 获取鼠标位置所在bar大小及位置
-    const startXRectBar = (startX: number) => {
-      let date = dayjs(startX * pxUnitAmp);
-      const dayRect = () => {
-        const stAmp = date.startOf('day');
-        const endAmp = date.endOf('day');
-        // @ts-ignore
-        const left = stAmp / pxUnitAmp;
-        // @ts-ignore
-        const width = (endAmp - stAmp) / pxUnitAmp;
-
-        return {
-          left,
-          width,
-        };
-      };
-      const weekRect = () => {
-        // week 注意周日为每周第一天 ????????
-        if (date.weekday() === 0) {
-          date = date.add(-1, 'week');
-        }
-
-        const left =
-          date
-            .weekday(1)
-            .startOf('day')
-            .valueOf() / pxUnitAmp;
-        const width = (7 * 24 * 60 * 60 * 1000 - 1000) / pxUnitAmp;
-
-        return {
-          left,
-          width,
-        };
-      };
-      const monthRect = () => {
-        const stAmp = date.startOf('month').valueOf();
-        const endAmp = date.endOf('month').valueOf();
-        const left = stAmp / pxUnitAmp;
-        const width = (endAmp - stAmp) / pxUnitAmp;
-
-        return {
-          left,
-          width,
-        };
-      };
-
-      const map = {
-        day: dayRect,
-        week: weekRect,
-        month: weekRect,
-        quarter: monthRect,
-        halfYear: monthRect,
-      };
-
-      return map[this.sightConfig.type]();
-    };
     const flattenData = flattenDeep(data);
-    const barList = flattenData.map((item: any, index) => {
+    const barList = flattenData.map((item, index) => {
       const valid = item.startDate && item.endDate;
       let startAmp = dayjs(item.startDate || 0)
         .startOf('day')
@@ -819,28 +752,24 @@ class GanttStore {
       const translateX = valid ? startAmp / pxUnitAmp : 0;
       const translateY = baseTop + index * topStep;
       const { _parent } = item;
-      const bar = {
+      const bar: Gantt.Bar = {
+        key: item.key,
         task: item,
+        record: item.record,
         translateX,
         translateY,
         width,
-        height,
         label: item.content,
         stepGesture: 'end', // start(开始）、moving(移动)、end(结束)
         invalidDateRange: !item.endDate || !item.startDate, // 是否为有效时间区间
-        dateTextFormat, // TODO 日期格式化函数 后期根据当前时间格式化为上周下周,
-        startXRectBar, // 鼠标位置 获取创建bar位置及大小
-        // setShadowShow,
-        // setInvalidTaskBar,
-        // getHovered,
+        dateTextFormat,
         loading: false,
         _group: item.group,
         _collapsed: item.collapsed, // 是否折叠
-        _depth: item._depth, // 表示子节点深度
+        _depth: item._depth as number, // 表示子节点深度
         _index: item._index, // 任务下标位置
         _parent, // 原任务数据
         _childrenCount: !item.children ? 0 : item.children.length, // 子任务
-        _dateFormat,
       };
       item._bar = bar;
       return bar;
@@ -989,7 +918,7 @@ class GanttStore {
     barInfo: Gantt.Bar,
     oldSize: { width: number; x: number }
   ) {
-    const { translateX, width, task } = barInfo;
+    const { translateX, width, task, record } = barInfo;
     const startDate = dayjs(translateX * this.pxUnitAmp)
       .hour(9)
       .format('YYYY-MM-DD HH:mm:ss');
@@ -1007,13 +936,11 @@ class GanttStore {
     runInAction(() => {
       barInfo.loading = true;
     });
-    const success = await this.onUpdate(task, startDate, endDate);
+    const success = await this.onUpdate(record, startDate, endDate);
     if (success) {
       runInAction(() => {
         task.startDate = startDate;
         task.endDate = endDate;
-        task[this.startDateKey] = startDate;
-        task[this.endDateKey] = endDate;
       });
     } else {
       barInfo.width = oldSize.width;

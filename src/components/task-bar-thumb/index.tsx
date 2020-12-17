@@ -44,7 +44,7 @@ const TaskBarThumb: React.FC<TaskBarProps> = ({ data }) => {
       }}
       onClick={handleClick}
     >
-      {renderBarThumb ? renderBarThumb(data.task, type) : label}
+      {renderBarThumb ? renderBarThumb(data.record, type) : label}
     </div>
   );
 };

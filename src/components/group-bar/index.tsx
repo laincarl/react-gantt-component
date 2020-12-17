@@ -31,7 +31,7 @@ const GroupBar: React.FC<GroupBarProps> = ({ data }) => {
             viewBox={`0 0 ${width + 1} ${height + 8}`}
           >
             <path
-              fill={data.task.background || '#7B809E'}
+              fill={data.record.background || '#7B809E'}
               d={`
               M${width - 2},0.5
               l-${width - 4},0

@@ -44,10 +44,11 @@ const DragResize: React.FC<DragResizeProps> = ({
     updateSize();
     onAutoScroll(delta);
   });
+  // TODO persist reachEdge
   const autoScroll = useMemo(
     () =>
       new AutoScroller({ scroller, onAutoScroll: handleAutoScroll, reachEdge }),
-    [handleAutoScroll, scroller]
+    [handleAutoScroll, scroller, reachEdge]
   );
   const positionRef = useRef({
     clientX: 0,

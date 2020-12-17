@@ -1,10 +1,10 @@
 import React from 'react';
-import Gantt from '../src';
-import createData from './utils/createData'
+import GanttComponent from '../src';
+import createData, { GanttRecord } from './utils/createData'
 
 export default {
   title: 'Basic',
-  component: Gantt,
+  component: GanttComponent,
   argTypes: {
     rowHeight: { control: { type: 'range', min: 30, max: 100, step: 10 } },
     tableIndent: { control: { type: 'range', min: 20, max: 100, step: 1 } },
@@ -25,7 +25,7 @@ export default {
 
 const GanttStory = ({ data, ...args }) => (
   <div style={{ width: '100%', height: 500 }}>
-    <Gantt
+    <GanttComponent<GanttRecord>
       data={createData(100)}
       columns={[{
         name: 'name',
@@ -43,7 +43,7 @@ const GanttStory = ({ data, ...args }) => (
         flex: 1,
         minWidth: 100,
       }]}
-      onUpdate={async () => {
+      onUpdate={async (item) => {
         return true
       }}
       {...args}

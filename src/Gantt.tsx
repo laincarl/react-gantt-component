@@ -3,7 +3,6 @@ import React, {
   useRef,
   useEffect,
   useContext,
-  forwardRef,
   useImperativeHandle,
 } from 'react';
 import { useSize } from 'ahooks';
@@ -19,7 +18,7 @@ import TimeIndicator from './components/time-indicator';
 import ScrollBar from './components/scroll-bar';
 import Chart from './components/chart';
 import ScrollTop from './components/scroll-top';
-import { Gantt } from './types';
+import { DefaultRecordType, Gantt } from './types';
 import { ROW_HEIGHT, TABLE_INDENT } from './constants';
 import { Dayjs } from 'dayjs';
 import './Gantt.less';
@@ -39,127 +38,137 @@ const Body: React.FC = ({ children }) => {
     </div>
   );
 };
-export interface GanttProps {
-  data: Gantt.Item[];
+export interface GanttProps<RecordType = DefaultRecordType> {
+  data: Gantt.Record<RecordType>[];
   columns: Gantt.Column[];
   onUpdate: (
-    item: Gantt.Item,
+    record: Gantt.Record<RecordType>,
     startDate: string,
     endDate: string
   ) => Promise<boolean>;
   startDateKey?: string;
   endDateKey?: string;
   isRestDay?: (date: string) => boolean;
-  getBarColor?: (
-    item: Gantt.Item
-  ) => { backgroundColor: string; borderColor: string };
-  showBackToday?: boolean;
-  showUnitSwitch?: boolean;
   unit?: Gantt.Sight;
-  onRow?: {
-    onClick: (item: Gantt.Item) => void;
-  };
-  tableIndent?: number;
-  expandIcon?: GanttContext['expandIcon'];
-  renderBar?: GanttContext['renderBar'];
-  renderBarThumb?: GanttContext['renderBarThumb'];
-  onBarClick?: GanttContext['onBarClick'];
-  tableCollapseAble?: GanttContext['tableCollapseAble'];
-  scrollTop?: GanttContext['scrollTop'];
   rowHeight?: number;
+  innerRef?: React.MutableRefObject<GanttRef>;
+  getBarColor?: GanttContext<RecordType>['getBarColor'];
+  showBackToday?: GanttContext<RecordType>['showBackToday'];
+  showUnitSwitch?: GanttContext<RecordType>['showUnitSwitch'];
+  onRow?: GanttContext<RecordType>['onRow'];
+  tableIndent?: GanttContext<RecordType>['tableIndent'];
+  expandIcon?: GanttContext<RecordType>['expandIcon'];
+  renderBar?: GanttContext<RecordType>['renderBar'];
+  renderBarThumb?: GanttContext<RecordType>['renderBarThumb'];
+  onBarClick?: GanttContext<RecordType>['onBarClick'];
+  tableCollapseAble?: GanttContext<RecordType>['tableCollapseAble'];
+  scrollTop?: GanttContext<RecordType>['scrollTop'];
 }
 export interface GanttRef {
   backToday: () => void;
   getWidthByDate: (startDate: Dayjs, endDate: Dayjs) => number;
 }
-const GanttComponent: React.FC<GanttProps> = forwardRef(
-  (
-    {
-      data,
-      columns,
-      onUpdate,
-      startDateKey = 'startDate',
-      endDateKey = 'endDate',
-      isRestDay,
+const GanttComponent = <RecordType extends DefaultRecordType>(
+  props: GanttProps<RecordType>
+) => {
+  const {
+    data,
+    columns,
+    onUpdate,
+    startDateKey = 'startDate',
+    endDateKey = 'endDate',
+    isRestDay,
+    getBarColor,
+    showBackToday = true,
+    showUnitSwitch = true,
+    unit,
+    onRow,
+    tableIndent = TABLE_INDENT,
+    expandIcon,
+    renderBar,
+    onBarClick,
+    tableCollapseAble = true,
+    renderBarThumb,
+    scrollTop = true,
+    rowHeight = ROW_HEIGHT,
+    innerRef,
+  } = props;
+  const store = useMemo(() => new GanttStore({ rowHeight }), [rowHeight]);
+  useEffect(() => {
+    store.setData(data, startDateKey, endDateKey);
+  }, [data, endDateKey, startDateKey, store]);
+  useEffect(() => {
+    store.setColumns(columns);
+  }, [columns, store]);
+  useEffect(() => {
+    store.setOnUpdate(onUpdate);
+  }, [onUpdate, store]);
+  useEffect(() => {
+    if (isRestDay) {
+      store.setIsRestDay(isRestDay);
+    }
+  }, [isRestDay, store]);
+  useEffect(() => {
+    if (unit) {
+      store.switchSight(unit);
+    }
+  }, [unit, store]);
+  useImperativeHandle(innerRef, () => ({
+    backToday: () => store.scrollToToday(),
+    getWidthByDate: store.getWidthByDate,
+  }));
+
+  const ContextValue = React.useMemo(
+    () => ({
+      prefixCls,
+      store,
       getBarColor,
-      showBackToday = true,
-      showUnitSwitch = true,
-      unit,
+      showBackToday,
+      showUnitSwitch,
       onRow,
-      tableIndent = TABLE_INDENT,
+      tableIndent,
       expandIcon,
       renderBar,
       onBarClick,
-      tableCollapseAble = true,
+      tableCollapseAble,
       renderBarThumb,
-      scrollTop = true,
-      rowHeight = ROW_HEIGHT,
-    },
-    ref
-  ) => {
-    const store = useMemo(() => new GanttStore({ rowHeight }), [rowHeight]);
-    useEffect(() => {
-      store.setData(data, startDateKey, endDateKey);
-    }, [data, endDateKey, startDateKey, store]);
-    useEffect(() => {
-      store.setColumns(columns);
-    }, [columns, store]);
-    useEffect(() => {
-      store.setOnUpdate(onUpdate);
-    }, [onUpdate, store]);
-    useEffect(() => {
-      if (isRestDay) {
-        store.setIsRestDay(isRestDay);
-      }
-    }, [isRestDay, store]);
-    useEffect(() => {
-      if (unit) {
-        store.switchSight(unit);
-      }
-    }, [unit, store]);
-    useImperativeHandle(
-      ref,
-      (): GanttRef => ({
-        backToday: () => store.scrollToToday(),
-        getWidthByDate: store.getWidthByDate,
-      })
-    );
-    return (
-      <Context.Provider
-        value={{
-          prefixCls,
-          store,
-          getBarColor,
-          showBackToday,
-          showUnitSwitch,
-          onRow,
-          tableIndent,
-          expandIcon,
-          renderBar,
-          onBarClick,
-          tableCollapseAble,
-          renderBarThumb,
-          scrollTop,
-        }}
-      >
-        <Body>
-          <header>
-            <TableHeader />
-            <TimeAxis />
-          </header>
-          <main ref={store.mainElementRef} onScroll={store.handleScroll}>
-            <SelectionIndicator />
-            <TableBody />
-            <Chart />
-          </main>
-          <Divider />
-          {showBackToday && <TimeIndicator />}
-          {showUnitSwitch && <TimeAxisScaleSelect />}
-          <ScrollBar />
-          {scrollTop && <ScrollTop />}
-        </Body>
-      </Context.Provider>
-    );
-  }
-);
+      scrollTop,
+    }),
+    [
+      store,
+      getBarColor,
+      showBackToday,
+      showUnitSwitch,
+      onRow,
+      tableIndent,
+      expandIcon,
+      renderBar,
+      onBarClick,
+      tableCollapseAble,
+      renderBarThumb,
+      scrollTop,
+    ]
+  );
+
+  return (
+    <Context.Provider value={ContextValue}>
+      <Body>
+        <header>
+          <TableHeader />
+          <TimeAxis />
+        </header>
+        <main ref={store.mainElementRef} onScroll={store.handleScroll}>
+          <SelectionIndicator />
+          <TableBody />
+          <Chart />
+        </main>
+        <Divider />
+        {showBackToday && <TimeIndicator />}
+        {showUnitSwitch && <TimeAxisScaleSelect />}
+        <ScrollBar />
+        {scrollTop && <ScrollTop />}
+      </Body>
+    </Context.Provider>
+  );
+};
 export default GanttComponent;

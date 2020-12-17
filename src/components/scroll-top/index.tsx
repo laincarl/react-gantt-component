@@ -10,7 +10,7 @@ const ScrollTop: React.FC = () => {
     if (store.mainElementRef.current) {
       store.mainElementRef.current.scrollTop = 0;
     }
-  }, []);
+  }, [store.mainElementRef]);
   if (scrollTop <= 100 || !store.mainElementRef.current) {
     return null;
   }

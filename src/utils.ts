@@ -1,35 +1,31 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 import dayjs from 'dayjs';
-import cloneDeep from 'lodash/cloneDeep';
 import { Gantt } from './types';
 import { MOVE_SPACE } from './constants';
 
 /**
  * 将树形数据向下递归为一维数组
  * @param {*} arr 数据源
- * @param {*} children  子集key
  */
 export function flattenDeep(
-  arr: any[] = [],
-  children = 'children',
+  arr: Gantt.Item[] = [],
   depth = 0,
-  parent = null
-): any[] {
+  parent: Gantt.Item | undefined = undefined
+): Gantt.Item[] {
   let index = 0;
-  return arr.reduce((flat, item) => {
+  return arr.reduce((flat: Gantt.Item[], item) => {
     item._depth = depth;
     item._parent = parent;
     item._index = index;
-    item._index = index;
     index += 1;
-
-    return flat.concat(
+    return [
+      ...flat,
       item,
-      item[children] && !item.collapsed
-        ? flattenDeep(item[children], children, depth + 1, item)
-        : []
-    );
+      ...(item.children && !item.collapsed
+        ? flattenDeep(item.children, depth + 1, item)
+        : []),
+    ];
   }, []);
 }
 
@@ -167,27 +163,31 @@ export function getMaxRange(bar: Gantt.Bar) {
     width: maxTranslateX - minTranslateX,
   };
 }
+const genKey = (() => {
+  let key = 0;
+  return function() {
+    return key++;
+  };
+})();
 export function transverseData(
-  data: Gantt.Item[] = [],
+  data: Gantt.Record[] = [],
   startDateKey: string,
   endDateKey: string
 ) {
-  const result: Gantt.Item[] = cloneDeep(data);
-  const temp: Gantt.Item[] = result.slice();
-  while (temp.length > 0) {
-    const current = temp.shift();
-    if (current) {
-      current.startDate = current[startDateKey] || '';
-      current.endDate = current[endDateKey] || '';
-      current.collapsed = current.collapsed || false;
-      if (current.children && current.children.length > 0) {
-        current.children.forEach(t => {
-          if (t) {
-            temp.push(t);
-          }
-        });
-      }
-    }
-  }
+  const result: Gantt.Item[] = [];
+
+  data.forEach(record => {
+    const item: Gantt.Item = {
+      key: genKey(),
+      record,
+      // TODO content
+      content: '',
+      startDate: record[startDateKey] || '',
+      endDate: record[endDateKey] || '',
+      collapsed: record.collapsed || false,
+      children: transverseData(record.children || [], startDateKey, endDateKey),
+    };
+    result.push(item);
+  });
   return result;
 }

@@ -1,17 +1,17 @@
 import { createContext } from 'react';
 import GanttStore from './store';
-import { Gantt } from './types';
+import { DefaultRecordType, Gantt } from './types';
 
-export interface GanttContext {
+export interface GanttContext<RecordType = DefaultRecordType> {
   prefixCls: string;
   store: GanttStore;
   getBarColor?: (
-    item: Gantt.Item
+    record: Gantt.Record<RecordType>
   ) => { backgroundColor: string; borderColor: string };
   showBackToday: boolean;
   showUnitSwitch: boolean;
   onRow?: {
-    onClick: (item: Gantt.Item) => void;
+    onClick: (record: Gantt.Record<RecordType>) => void;
   };
   tableIndent: number;
   expandIcon?: ({
@@ -24,16 +24,16 @@ export interface GanttContext {
     onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   }) => React.ReactNode;
   renderBar?: (
-    barInfo: Gantt.Bar,
+    barInfo: Gantt.Bar<RecordType>,
     { width, height }: { width: number; height: number }
   ) => React.ReactNode;
   renderBarThumb?: (
-    item: Gantt.Item,
+    item: Gantt.Record<RecordType>,
     type: 'left' | 'right'
   ) => React.ReactNode;
-  onBarClick?: (item: Gantt.Item) => void;
+  onBarClick?: (record: Gantt.Record<RecordType>) => void;
   tableCollapseAble: boolean;
   scrollTop: boolean | React.CSSProperties;
 }
-const context = createContext({} as GanttContext);
+const context = createContext<GanttContext>({} as GanttContext);
 export default context;

@@ -12,29 +12,14 @@ const BarList: React.FC = () => {
   const { count, start } = store.getVisibleRows;
   return (
     <>
-      {barList.slice(start, start + count).map((bar, index) => {
-        const rowIndex = index + start;
+      {barList.slice(start, start + count).map(bar => {
         if (bar._group) {
-          return (
-            <GroupBar
-              // eslint-disable-next-line react/no-array-index-key
-              key={`${bar.label}-${rowIndex}`}
-              data={bar}
-            />
-          );
+          return <GroupBar key={bar.key} data={bar} />;
         }
         return bar.invalidDateRange ? (
-          <InvalidTaskBar
-            // eslint-disable-next-line react/no-array-index-key
-            key={`${bar.label}-${rowIndex}-invalid`}
-            data={bar}
-          />
+          <InvalidTaskBar key={bar.key} data={bar} />
         ) : (
-          <TaskBar
-            // eslint-disable-next-line react/no-array-index-key
-            key={`${bar.label}-${rowIndex}`}
-            data={bar}
-          />
+          <TaskBar key={bar.key} data={bar} />
         );
       })}
     </>

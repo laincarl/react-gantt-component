@@ -19,8 +19,8 @@
     "sourceMap": true,
     // match output dir to input dir. e.g. dist/index instead of dist/src/index
     "rootDir": "./src",
-    // stricter type-checking for stronger correctness. Recommended by TS
-    "strict": true,
+    // 设为false，因为有些泛型限制太大
+    "strict": false,
     // linter checks for common issues
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,

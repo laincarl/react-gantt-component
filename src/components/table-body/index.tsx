@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React, { useContext, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
@@ -14,6 +13,7 @@ const TableRows = () => {
   const { columns, rowHeight } = store;
   const columnsWidth = store.getColumnsWidth;
   const barList = store.getBarList;
+
   const { count, start } = store.getVisibleRows;
   const prefixClsTableBody = `${prefixCls}-table-body`;
   if (barList.length === 0) {
@@ -45,7 +45,7 @@ const TableRows = () => {
         }
         return (
           <div
-            key={rowIndex}
+            key={bar.key}
             role="none"
             className={`${prefixClsTableBody}-row`}
             style={{
@@ -53,7 +53,7 @@ const TableRows = () => {
               top: (rowIndex + start) * rowHeight + TOP_PADDING,
             }}
             onClick={() => {
-              onRow?.onClick(bar.task);
+              onRow?.onClick(bar.record);
             }}
           >
             {columns.map((column, index) => (
@@ -124,11 +124,11 @@ const TableRows = () => {
                     )}
                   </div>
                 )}
-                {/* @ts-ignore */}
                 <span className={`${prefixClsTableBody}-ellipsis`}>
                   {column.render
-                    ? column.render(bar.task)
-                    : bar.task[column.name]}
+                    ? column.render(bar.record)
+                    : // @ts-ignore
+                      bar.record[column.name]}
                 </span>
               </div>
             ))}

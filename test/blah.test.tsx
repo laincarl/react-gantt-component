@@ -19,6 +19,7 @@ describe('Basic', () => {
                 endDate: '2020-10-08',
                 name: '一个名称',
                 collapsed: false,
+                children: [],
               },
             ],
           },
