@@ -25,7 +25,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint"
+      "pre-commit": "tsdx lint",
+      "commit-msg": "commitlint -e $GIT_PARAMS"
     }
   },
   "prettier": {
@@ -49,6 +50,8 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
     "@size-limit/preset-small-lib": "^4.9.1",
     "@storybook/addon-controls": "^6.1.11",
     "@storybook/addon-essentials": "^6.1.10",
@@ -62,7 +65,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "babel-loader": "^8.2.2",
-    "husky": "^4.3.4",
+    "husky": "^4.3.6",
     "identity-obj-proxy": "^3.0.0",
     "less": "^3.12.2",
     "less-loader": "^7.1.0",
