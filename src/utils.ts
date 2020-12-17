@@ -182,6 +182,7 @@ export function transverseData(
       record,
       // TODO content
       content: '',
+      group: record.group,
       startDate: record[startDateKey] || '',
       endDate: record[endDateKey] || '',
       collapsed: record.collapsed || false,

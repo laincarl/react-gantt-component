@@ -66,6 +66,7 @@ export namespace Gantt {
   }
 
   export type Record<RecordType = DefaultRecordType> = RecordType & {
+    group?: boolean;
     borderColor?: string;
     backgroundColor?: string;
     collapsed?: boolean;
