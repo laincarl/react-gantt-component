@@ -272,21 +272,17 @@ class GanttStore {
   }
 
   getTranslateXByDate(date: string) {
-    return Math.floor(
+    return (
       dayjs(date)
-        .hour(0)
-        .minute(0)
-        .second(0)
+        .startOf('day')
         .valueOf() / this.pxUnitAmp
     );
   }
 
   @computed get todayTranslateX() {
-    return Math.floor(
-      dayjs(new Date().valueOf())
-        .hour(0)
-        .minute(0)
-        .second(0)
+    return (
+      dayjs()
+        .startOf('day')
         .valueOf() / this.pxUnitAmp
     );
   }
@@ -718,6 +714,7 @@ class GanttStore {
 
   @computed get getBarList(): Gantt.Bar[] {
     const { pxUnitAmp, data } = this;
+    // 最小宽度
     const minStamp = 11 * pxUnitAmp;
     const height = 8;
     const baseTop = TOP_PADDING + this.rowHeight / 2 - height / 2;
@@ -732,8 +729,7 @@ class GanttStore {
         .startOf('day')
         .valueOf();
       let endAmp = dayjs(item.endDate || 0)
-        .add(1, 'day')
-        .startOf('day')
+        .endOf('day')
         .valueOf();
 
       // 开始结束日期相同默认一天
@@ -742,8 +738,7 @@ class GanttStore {
           .startOf('day')
           .valueOf();
         endAmp = dayjs(item.endDate || 0)
-          .add(1, 'day')
-          .startOf('day')
+          .endOf('day')
           .add(minStamp, 'millisecond')
           .valueOf();
       }
