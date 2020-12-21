@@ -36,7 +36,9 @@ const TimeAxis: React.FC = () => {
             className={`${prefixClsTimeAxis}-major`}
             style={{ width: item.width, left: item.left }}
           >
-            <div className={`${prefixClsTimeAxis}-label`}>{item.label}</div>
+            <div className={`${prefixClsTimeAxis}-major-label`}>
+              {item.label}
+            </div>
           </div>
         ))}
         {minorList.map(item => (
@@ -47,7 +49,9 @@ const TimeAxis: React.FC = () => {
             })}
             style={{ width: item.width, left: item.left }}
           >
-            <div className={`${prefixClsTimeAxis}-label`}>{item.label}</div>
+            <div className={`${prefixClsTimeAxis}-minor-label`}>
+              {item.label}
+            </div>
           </div>
         ))}
       </div>
