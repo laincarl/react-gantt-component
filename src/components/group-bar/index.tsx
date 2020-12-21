@@ -10,7 +10,7 @@ interface GroupBarProps {
 }
 const height = 8;
 const GroupBar: React.FC<GroupBarProps> = ({ data }) => {
-  const { prefixCls } = useContext(Context);
+  const { prefixCls, renderGroupBar } = useContext(Context);
   const { translateY } = data;
   const { translateX, width } = getMaxRange(data);
   return (
@@ -23,16 +23,22 @@ const GroupBar: React.FC<GroupBarProps> = ({ data }) => {
     >
       <div>
         <div className={`${prefixCls}-bar`}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            width={width + 1}
-            height={height + 8}
-            viewBox={`0 0 ${width + 1} ${height + 8}`}
-          >
-            <path
-              fill={data.record.background || '#7B809E'}
-              d={`
+          {renderGroupBar ? (
+            renderGroupBar(data, {
+              width,
+              height,
+            })
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              version="1.1"
+              width={width + 1}
+              height={height + 8}
+              viewBox={`0 0 ${width + 1} ${height + 8}`}
+            >
+              <path
+                fill={data.record.background || '#7B809E'}
+                d={`
               M${width - 2},0.5
               l-${width - 4},0
               c-0.41421,0 -0.78921,0.16789 -1.06066,0.43934
@@ -45,8 +51,9 @@ const GroupBar: React.FC<GroupBarProps> = ({ data }) => {
               c-0.03256,-0.38255 -0.20896,-0.724 -0.47457,-0.97045
               c-0.26763,-0.24834 -0.62607,-0.40013 -1.01995,-0.40013z
             `}
-            />
-          </svg>
+              />
+            </svg>
+          )}
         </div>
       </div>
     </div>

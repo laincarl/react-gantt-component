@@ -27,6 +27,10 @@ export interface GanttContext<RecordType = DefaultRecordType> {
     barInfo: Gantt.Bar<RecordType>,
     { width, height }: { width: number; height: number }
   ) => React.ReactNode;
+  renderGroupBar?: (
+    barInfo: Gantt.Bar<RecordType>,
+    { width, height }: { width: number; height: number }
+  ) => React.ReactNode;
   renderBarThumb?: (
     item: Gantt.Record<RecordType>,
     type: 'left' | 'right'
