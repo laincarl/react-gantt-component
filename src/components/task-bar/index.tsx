@@ -7,6 +7,7 @@ import Context from '../../context';
 import { Gantt } from '../../types';
 import DragResize from '../drag-resize';
 import './index.less';
+import { TOP_PADDING } from '../../constants';
 interface TaskBarProps {
   data: Gantt.Bar;
 }
@@ -32,14 +33,23 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
   } = data;
   const prefixClsTaskBar = `${prefixCls}-task-bar`;
   // TODO 优化hover判断性能
-  const { selectionIndicatorTop, rowHeight } = store;
+  const { selectionIndicatorTop, showSelectionIndicator, rowHeight } = store;
+
   const showDragBar = useMemo(() => {
-    const baseTop = translateY - (translateY % rowHeight);
-    const isShow =
-      selectionIndicatorTop >= baseTop &&
-      selectionIndicatorTop <= baseTop + rowHeight;
+    if (!showSelectionIndicator) {
+      return false;
+    }
+    // 差值
+    const baseTop = TOP_PADDING + rowHeight / 2 - barHeight / 2;
+    const isShow = selectionIndicatorTop === translateY - baseTop;
     return isShow;
-  }, [selectionIndicatorTop, translateY, rowHeight]);
+  }, [
+    showSelectionIndicator,
+    selectionIndicatorTop,
+    translateY,
+    rowHeight,
+    barHeight,
+  ]);
   const themeColor = useMemo(() => {
     if (translateX + width >= dayjs().valueOf() / store.pxUnitAmp) {
       return ['#95DDFF', '#64C7FE'];

@@ -716,6 +716,7 @@ class GanttStore {
     const { pxUnitAmp, data } = this;
     // 最小宽度
     const minStamp = 11 * pxUnitAmp;
+    // TODO 去除高度读取
     const height = 8;
     const baseTop = TOP_PADDING + this.rowHeight / 2 - height / 2;
     const topStep = this.rowHeight;
@@ -824,6 +825,7 @@ class GanttStore {
 
   @action
   showSelectionBar(event: MouseEvent) {
+    console.log('ss');
     const scrollTop = this.mainElementRef.current?.scrollTop || 0;
     const { top } = this.mainElementRef.current?.getBoundingClientRect() || {
       top: 0,
