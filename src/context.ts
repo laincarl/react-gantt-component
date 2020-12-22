@@ -14,6 +14,7 @@ export interface GanttContext<RecordType = DefaultRecordType> {
     onClick: (record: Gantt.Record<RecordType>) => void;
   };
   tableIndent: number;
+  barHeight: number;
   expandIcon?: ({
     level,
     collapsed,

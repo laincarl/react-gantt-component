@@ -10,12 +10,16 @@ import './index.less';
 interface TaskBarProps {
   data: Gantt.Bar;
 }
-const height = 8;
 
 const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
-  const { store, getBarColor, renderBar, onBarClick, prefixCls } = useContext(
-    Context
-  );
+  const {
+    store,
+    getBarColor,
+    renderBar,
+    onBarClick,
+    prefixCls,
+    barHeight,
+  } = useContext(Context);
   const {
     width,
     translateX,
@@ -179,15 +183,15 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
           {renderBar ? (
             renderBar(data, {
               width: width + 1,
-              height: height + 1,
+              height: barHeight + 1,
             })
           ) : (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               version="1.1"
               width={width + 1}
-              height={height + 1}
-              viewBox={`0 0 ${width + 1} ${height + 1}`}
+              height={barHeight + 1}
+              viewBox={`0 0 ${width + 1} ${barHeight + 1}`}
             >
               <path
                 fill={

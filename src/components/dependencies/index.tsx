@@ -9,7 +9,7 @@ const Dependencies: React.FC = () => {
   return (
     <>
       {dependencies.map(dependence => (
-        <Dependence data={dependence} />
+        <Dependence key={JSON.stringify(dependence)} data={dependence} />
       ))}
     </>
   );
