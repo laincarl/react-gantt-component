@@ -38,21 +38,19 @@ function getPoints(from: Point, to: Point, type: Gantt.DependenceType) {
     }
   }
   // 不同向，需要四个关键点
-  if (fromX > toX) {
-    return [
-      { x: fromX + spaceX, y: fromY },
-      { x: fromX + spaceX, y: toY - spaceY },
-      { x: toX - spaceX, y: toY - spaceY },
-      { x: toX - spaceX, y: toY },
-    ];
-  } else {
-    return [
-      { x: fromX - spaceX, y: fromY },
-      { x: fromX - spaceX, y: toY - spaceY },
-      { x: toX + spaceX, y: toY - spaceY },
-      { x: toX + spaceX, y: toY },
-    ];
-  }
+
+  return [
+    { x: type === 'finish_start' ? fromX + spaceX : fromX - spaceX, y: fromY },
+    {
+      x: type === 'finish_start' ? fromX + spaceX : fromX - spaceX,
+      y: toY - spaceY,
+    },
+    {
+      x: type === 'finish_start' ? toX - spaceX : toX + spaceX,
+      y: toY - spaceY,
+    },
+    { x: type === 'finish_start' ? toX - spaceX : toX + spaceX, y: toY },
+  ];
 }
 const Dependence: React.FC<DependenceProps> = ({ data }) => {
   const { store, barHeight } = useContext(Context);
