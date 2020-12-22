@@ -81,10 +81,6 @@ class GanttStore {
 
   @observable columns: Gantt.Column[] = [];
 
-  // @observable dependencies: Gantt.Dependence[] = [{
-  //   from: '36',
-  //   to: '53',
-  // }];
   @observable dependencies: Gantt.Dependence[] = [];
 
   @observable scrolling = false;
@@ -181,6 +177,10 @@ class GanttStore {
   @action
   setColumns(columns: Gantt.Column[]) {
     this.columns = columns;
+  }
+  @action
+  setDependencies(dependencies: Gantt.Dependence[]) {
+    this.dependencies = dependencies;
   }
 
   @action

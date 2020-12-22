@@ -81,8 +81,14 @@ export namespace Gantt {
     label: string;
     render?: (item: Record<RecordType>) => React.ReactNode;
   }
+  export type DependenceType =
+    | 'start_finish'
+    | 'finish_start'
+    | 'start_start'
+    | 'finish_finish';
   export interface Dependence {
     from: string;
     to: string;
+    type: DependenceType;
   }
 }

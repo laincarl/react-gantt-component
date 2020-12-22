@@ -1,6 +1,7 @@
 export const ROW_HEIGHT = 28;
 export const HEADER_HEIGHT = 56;
 export const CELL_UNIT = 30;
+export const BAR_HEIGHT = 8;
 export const TOP_PADDING = 0;
 export const TABLE_INDENT = 30;
 // 移动空隙

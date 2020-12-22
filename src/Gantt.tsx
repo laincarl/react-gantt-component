@@ -19,7 +19,7 @@ import ScrollBar from './components/scroll-bar';
 import Chart from './components/chart';
 import ScrollTop from './components/scroll-top';
 import { DefaultRecordType, Gantt } from './types';
-import { ROW_HEIGHT, TABLE_INDENT } from './constants';
+import { BAR_HEIGHT, ROW_HEIGHT, TABLE_INDENT } from './constants';
 import { Dayjs } from 'dayjs';
 import './Gantt.less';
 
@@ -41,6 +41,7 @@ const Body: React.FC = ({ children }) => {
 export interface GanttProps<RecordType = DefaultRecordType> {
   data: Gantt.Record<RecordType>[];
   columns: Gantt.Column[];
+  dependencies?: Gantt.Dependence[];
   onUpdate: (
     record: Gantt.Record<RecordType>,
     startDate: string,
@@ -75,6 +76,7 @@ const GanttComponent = <RecordType extends DefaultRecordType>(
   const {
     data,
     columns,
+    dependencies = [],
     onUpdate,
     startDateKey = 'startDate',
     endDateKey = 'endDate',
@@ -106,6 +108,10 @@ const GanttComponent = <RecordType extends DefaultRecordType>(
     store.setOnUpdate(onUpdate);
   }, [onUpdate, store]);
   useEffect(() => {
+    store.setDependencies(dependencies);
+  }, [dependencies, store]);
+
+  useEffect(() => {
     if (isRestDay) {
       store.setIsRestDay(isRestDay);
     }
@@ -136,6 +142,7 @@ const GanttComponent = <RecordType extends DefaultRecordType>(
       tableCollapseAble,
       renderBarThumb,
       scrollTop,
+      barHeight: BAR_HEIGHT,
     }),
     [
       store,
