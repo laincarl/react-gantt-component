@@ -8,9 +8,9 @@ interface Size {}
 interface DragResizeProps extends React.HTMLProps<HTMLDivElement> {
   onResize: ({ width, x }: { width: number; x: number }) => void;
   /* 拖拽前的size */
-  onResizeEnd: ({ width, x }: { width: number; x: number }) => void;
+  onResizeEnd?: ({ width, x }: { width: number; x: number }) => void;
   onBeforeResize?: () => void;
-  minWidth: number;
+  minWidth?: number;
   type: 'left' | 'right' | 'move';
   grid?: number;
   scroller?: HTMLElement;
@@ -18,8 +18,9 @@ interface DragResizeProps extends React.HTMLProps<HTMLDivElement> {
     width: number;
     x: number;
   };
-  onAutoScroll: (delta: number) => void;
-  reachEdge: (position: 'left' | 'right') => boolean;
+  autoScroll?: boolean;
+  onAutoScroll?: (delta: number) => void;
+  reachEdge?: (position: 'left' | 'right') => boolean;
   /* 点击就算开始 */
   clickStart?: boolean;
 }
@@ -29,12 +30,13 @@ const DragResize: React.FC<DragResizeProps> = ({
   onBeforeResize,
   onResize,
   onResizeEnd,
-  minWidth,
+  minWidth = 0,
   grid,
   defaultSize: { x: defaultX, width: defaultWidth },
   scroller,
+  autoScroll: enableAutoScroll = true,
   onAutoScroll,
-  reachEdge,
+  reachEdge = () => false,
   clickStart = false,
   children,
   ...otherProps
@@ -119,16 +121,17 @@ const DragResize: React.FC<DragResizeProps> = ({
     window.removeEventListener('mouseup', handleMouseUp);
     if (resizing) {
       setResizing(false);
-      onResizeEnd({
-        x: positionRef.current.x,
-        width: positionRef.current.width,
-      });
+      onResizeEnd &&
+        onResizeEnd({
+          x: positionRef.current.x,
+          width: positionRef.current.width,
+        });
     }
   });
   const handleMouseDown = usePersistFn(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       event.stopPropagation();
-      if (scroller) {
+      if (enableAutoScroll && scroller) {
         autoScroll.start();
       }
       if (clickStart) {

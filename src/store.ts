@@ -115,8 +115,6 @@ class GanttStore {
 
   mainElementRef = createRef<HTMLDivElement>();
 
-  chartHammer: HammerManager | undefined = undefined;
-
   chartElementRef = createRef<HTMLDivElement>();
 
   isPointerPress: boolean = false;
@@ -184,34 +182,14 @@ class GanttStore {
   }
 
   @action
-  initDragScrollHammer(element: HTMLElement) {
-    const hammer = new Hammer(element);
-    let { translateX } = this;
-
-    const panStart = () => {
-      this.scrolling = true;
-      translateX = this.translateX;
-    };
-
-    const panMove = (event: HammerInput) => {
-      this.setTranslateX(translateX - event.deltaX);
-    };
-
-    const panEnd = (event: HammerInput) => {
-      this.scrolling = false;
-      this.setTranslateX(translateX - event.deltaX);
-    };
-
-    hammer.on('panstart', panStart);
-    hammer.on('panmove', panMove);
-    hammer.on('panend', panEnd);
+  handlePanMove(translateX: number) {
+    this.scrolling = true;
+    this.setTranslateX(translateX);
   }
-
   @action
-  setChartHammer(chartHammer: HammerManager) {
-    this.chartHammer = chartHammer;
+  handlePanEnd() {
+    this.scrolling = false;
   }
-
   @action syncSize(size: { width?: number; height?: number }) {
     if (!size.height || !size.width) {
       return;
@@ -825,7 +803,6 @@ class GanttStore {
 
   @action
   showSelectionBar(event: MouseEvent) {
-    console.log('ss');
     const scrollTop = this.mainElementRef.current?.scrollTop || 0;
     const { top } = this.mainElementRef.current?.getBoundingClientRect() || {
       top: 0,

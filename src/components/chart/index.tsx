@@ -1,6 +1,5 @@
 import React, { useContext, useCallback, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import Hammer from 'hammerjs';
 import DragPresent from '../drag-present';
 import BarList from '../bar-list';
 import BarThumbList from '../bar-thumb-list';
@@ -32,9 +31,6 @@ const Chart: React.FC = () => {
   useEffect(() => {
     const element = chartElementRef.current;
     if (element) {
-      const chartHammer = new Hammer(element);
-      store.setChartHammer(chartHammer);
-      // store.initDragScrollHammer(element);
       element.addEventListener('wheel', store.handleWheel);
     }
     return () => {
