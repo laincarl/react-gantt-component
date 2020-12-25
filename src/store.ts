@@ -393,7 +393,6 @@ class GanttStore {
 
     // 初始化当前时间
     let curDate = dayjs(translateAmp);
-    const dateMap = new Map<string, Gantt.MajorAmp>();
     const dates: Gantt.MajorAmp[] = [];
 
     // 对可视区域内的时间进行迭代
@@ -402,22 +401,14 @@ class GanttStore {
 
       let start = curDate;
       const end = getEnd(start);
-      if (dateMap.size !== 0) {
+      if (dates.length !== 0) {
         start = getStart(curDate);
       }
-
-      if (!dateMap.has(majorKey)) {
-        dateMap.set(majorKey, {
-          label: majorKey,
-          startDate: start,
-          endDate: end,
-        });
-        dates.push({
-          label: majorKey,
-          startDate: start,
-          endDate: end,
-        });
-      }
+      dates.push({
+        label: majorKey,
+        startDate: start,
+        endDate: end,
+      });
 
       // 获取下次迭代的时间
       start = getStart(curDate);
@@ -449,7 +440,7 @@ class GanttStore {
   getMinorList(): Gantt.Minor[] {
     const minorFormatMap = {
       day: 'YYYY-MM-D',
-      week: 'YYYY-w周', // format W 不知道为什么不支持周，文档却说支持,
+      week: 'YYYY-w周',
       month: 'YYYY-MM月',
       quarter: 'YYYY-第Q季',
       halfYear: 'YYYY-',
@@ -550,26 +541,16 @@ class GanttStore {
 
     // 初始化当前时间
     let curDate = dayjs(startAmp);
-    const dateMap = new Map<string, Gantt.MinorAmp>();
     const dates: Gantt.MinorAmp[] = [];
     while (curDate.isBetween(startAmp - 1, endAmp + 1)) {
       const minorKey = getMinorKey(curDate);
-
       const start = setStart(curDate);
       const end = setEnd(start);
-      if (!dateMap.has(minorKey)) {
-        dateMap.set(minorKey, {
-          label: minorKey.split('-').pop() as string,
-          startDate: start,
-          endDate: end,
-        });
-        dates.push({
-          label: minorKey.split('-').pop() as string,
-          startDate: start,
-          endDate: end,
-        });
-      }
-
+      dates.push({
+        label: minorKey.split('-').pop() as string,
+        startDate: start,
+        endDate: end,
+      });
       curDate = getNextDate(start);
     }
 
@@ -592,7 +573,6 @@ class GanttStore {
       };
     };
     const weekRect = () => {
-      // week 注意周日为每周第一天 ????????
       if (date.weekday() === 0) {
         date = date.add(-1, 'week');
       }
@@ -634,20 +614,12 @@ class GanttStore {
   minorAmp2Px(ampList: Gantt.MinorAmp[]): Gantt.Minor[] {
     const { pxUnitAmp } = this;
     const list = ampList.map(item => {
-      const startDate = item.startDate
-        .hour(0)
-        .minute(0)
-        .second(0);
-      const endDate = item.endDate
-        .hour(23)
-        .minute(59)
-        .second(59);
+      const startDate = item.startDate;
+      const endDate = item.endDate;
 
       const { label } = item;
-      const left = Math.ceil(startDate.valueOf() / pxUnitAmp);
-      const width = Math.ceil(
-        (endDate.valueOf() - startDate.valueOf()) / pxUnitAmp
-      );
+      const left = startDate.valueOf() / pxUnitAmp;
+      const width = (endDate.valueOf() - startDate.valueOf()) / pxUnitAmp;
 
       let isWeek = false;
       if (this.sightConfig.type === 'day') {
