@@ -865,14 +865,14 @@ class GanttStore {
     oldSize: { width: number; x: number }
   ) {
     const { translateX, width, task, record } = barInfo;
-    const startDate = dayjs(translateX * this.pxUnitAmp)
-      .hour(9)
-      .format('YYYY-MM-DD HH:mm:ss');
+    const startDate = dayjs(translateX * this.pxUnitAmp).format(
+      'YYYY-MM-DD HH:mm:ss'
+    );
     const endDate = dayjs((translateX + width) * this.pxUnitAmp)
       .subtract(1)
-      .hour(18)
-      .minute(0)
-      .second(0)
+      .hour(23)
+      .minute(59)
+      .second(59)
       .format('YYYY-MM-DD HH:mm:ss');
     const oldStartDate = barInfo.task.startDate;
     const oldEndDate = barInfo.task.endDate;
