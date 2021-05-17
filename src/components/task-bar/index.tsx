@@ -68,7 +68,22 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
   const handleLeftResizeEnd = useCallback(
     (oldSize: { width: number; x: number }) => {
       store.handleDragEnd();
-      store.updateTaskDate(data, oldSize);
+      store.updateTaskDate(data, oldSize, 'left');
+    },
+    [data, store]
+  );
+  const handleRightResizeEnd = useCallback(
+    (oldSize: { width: number; x: number }) => {
+      store.handleDragEnd();
+      store.updateTaskDate(data, oldSize, 'right');
+    },
+    [data, store]
+  );
+
+  const handleMoveEnd = useCallback(
+    (oldSize: { width: number; x: number }) => {
+      store.handleDragEnd();
+      store.updateTaskDate(data, oldSize, 'move');
     },
     [data, store]
   );
@@ -152,7 +167,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
               )}
               style={{ left: width + 1 }}
               onResize={handleResize}
-              onResizeEnd={handleLeftResizeEnd}
+              onResizeEnd={handleRightResizeEnd}
               defaultSize={{
                 x: translateX,
                 width,
@@ -177,7 +192,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
         <DragResize
           className={`${prefixClsTaskBar}-bar`}
           onResize={handleResize}
-          onResizeEnd={handleLeftResizeEnd}
+          onResizeEnd={handleMoveEnd}
           defaultSize={{
             x: translateX,
             width,

@@ -21,7 +21,7 @@ dayjs.extend(quarterOfYear);
 dayjs.extend(advancedFormat);
 dayjs.extend(isBetween);
 dayjs.extend(isLeapYear);
-
+const ONE_DAY_MS = 86400000;
 // 视图日视图、周视图、月视图、季视图、年视图
 export const viewTypeList: Gantt.SightConfig[] = [
   {
@@ -843,7 +843,7 @@ class GanttStore {
   ) {
     barInfo.invalidDateRange = false;
     this.handleDragEnd();
-    this.updateTaskDate(barInfo, oldSize);
+    this.updateTaskDate(barInfo, oldSize, 'create');
   }
 
   @action
@@ -855,27 +855,64 @@ class GanttStore {
     barInfo.translateX = Math.max(x, 0);
     barInfo.stepGesture = 'moving';
   }
-
+  getMovedDay(ms: number): number {
+    return Math.round(ms / ONE_DAY_MS);
+  }
   /**
    * 更新时间
    */
   @action
   async updateTaskDate(
     barInfo: Gantt.Bar,
-    oldSize: { width: number; x: number }
+    oldSize: { width: number; x: number },
+    type: 'move' | 'left' | 'right' | 'create'
   ) {
     const { translateX, width, task, record } = barInfo;
-    const startDate = dayjs(translateX * this.pxUnitAmp).format(
-      'YYYY-MM-DD HH:mm:ss'
-    );
-    const endDate = dayjs((translateX + width) * this.pxUnitAmp)
-      .subtract(1)
-      .hour(23)
-      .minute(59)
-      .second(59)
-      .format('YYYY-MM-DD HH:mm:ss');
     const oldStartDate = barInfo.task.startDate;
     const oldEndDate = barInfo.task.endDate;
+    let startDate = oldStartDate;
+    let endDate = oldEndDate;
+
+    if (type === 'move') {
+      const moveTime = this.getMovedDay(
+        (translateX - oldSize.x) * this.pxUnitAmp
+      );
+      // 移动，只根据移动距离偏移
+      startDate = dayjs(oldStartDate)
+        .add(moveTime, 'day')
+        .format('YYYY-MM-DD HH:mm:ss');
+      endDate = dayjs(oldEndDate)
+        .add(moveTime, 'day')
+        .format('YYYY-MM-DD HH:mm:ss');
+    } else if (type === 'left') {
+      const moveTime = this.getMovedDay(
+        (translateX - oldSize.x) * this.pxUnitAmp
+      );
+      // 左侧移动，只改变开始时间
+      startDate = dayjs(oldStartDate)
+        .add(moveTime, 'day')
+        .format('YYYY-MM-DD HH:mm:ss');
+    } else if (type === 'right') {
+      const moveTime = this.getMovedDay(
+        (width - oldSize.width) * this.pxUnitAmp
+      );
+      // 右侧移动，只改变结束时间
+      endDate = dayjs(oldEndDate)
+        .add(moveTime, 'day')
+        .format('YYYY-MM-DD HH:mm:ss');
+    } else if (type === 'create') {
+      //创建
+      startDate = dayjs(translateX * this.pxUnitAmp).format(
+        'YYYY-MM-DD HH:mm:ss'
+      );
+      endDate = dayjs((translateX + width) * this.pxUnitAmp)
+        .subtract(1)
+        .hour(23)
+        .minute(59)
+        .second(59)
+        .format('YYYY-MM-DD HH:mm:ss');
+    }
+    console.log(type, startDate, endDate);
     if (startDate === oldStartDate && endDate === oldEndDate) {
       return;
     }
