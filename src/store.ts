@@ -21,7 +21,7 @@ dayjs.extend(quarterOfYear);
 dayjs.extend(advancedFormat);
 dayjs.extend(isBetween);
 dayjs.extend(isLeapYear);
-const ONE_DAY_MS = 86400000;
+export const ONE_DAY_MS = 86400000;
 // 视图日视图、周视图、月视图、季视图、年视图
 export const viewTypeList: Gantt.SightConfig[] = [
   {
@@ -912,7 +912,6 @@ class GanttStore {
         .second(59)
         .format('YYYY-MM-DD HH:mm:ss');
     }
-    console.log(type, startDate, endDate);
     if (startDate === oldStartDate && endDate === oldEndDate) {
       return;
     }

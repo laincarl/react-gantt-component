@@ -8,6 +8,7 @@ import { Gantt } from '../../types';
 import DragResize from '../drag-resize';
 import './index.less';
 import { TOP_PADDING } from '../../constants';
+import { ONE_DAY_MS } from '../../store';
 interface TaskBarProps {
   data: Gantt.Bar;
 }
@@ -104,6 +105,8 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
   const reachEdge = usePersistFn((position: 'left' | 'right') => {
     return position === 'left' && store.translateX <= 0;
   });
+  // 根据不同的视图确定拖动时的单位，在任何视图下都以一天为单位
+  const grid = useMemo(() => ONE_DAY_MS / store.pxUnitAmp, [store.pxUnitAmp]);
   return (
     <div
       role="none"
@@ -153,7 +156,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
                 width,
               }}
               minWidth={30}
-              grid={30}
+              grid={grid}
               type="left"
               scroller={store.chartElementRef.current || undefined}
               onAutoScroll={handleAutoScroll}
@@ -173,7 +176,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
                 width,
               }}
               minWidth={30}
-              grid={30}
+              grid={grid}
               type="right"
               scroller={store.chartElementRef.current || undefined}
               onAutoScroll={handleAutoScroll}
@@ -198,7 +201,7 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
             width,
           }}
           minWidth={30}
-          grid={30}
+          grid={grid}
           type="move"
           scroller={store.chartElementRef.current || undefined}
           onAutoScroll={handleAutoScroll}
