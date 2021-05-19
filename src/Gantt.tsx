@@ -61,6 +61,7 @@ export interface GanttProps<RecordType = DefaultRecordType> {
   expandIcon?: GanttContext<RecordType>['expandIcon'];
   renderBar?: GanttContext<RecordType>['renderBar'];
   renderGroupBar?: GanttContext<RecordType>['renderGroupBar'];
+  renderInvalidBar?: GanttContext<RecordType>['renderInvalidBar'];
   renderBarThumb?: GanttContext<RecordType>['renderBarThumb'];
   onBarClick?: GanttContext<RecordType>['onBarClick'];
   tableCollapseAble?: GanttContext<RecordType>['tableCollapseAble'];
@@ -89,6 +90,7 @@ const GanttComponent = <RecordType extends DefaultRecordType>(
     tableIndent = TABLE_INDENT,
     expandIcon,
     renderBar,
+    renderInvalidBar,
     renderGroupBar,
     onBarClick,
     tableCollapseAble = true,
@@ -137,6 +139,7 @@ const GanttComponent = <RecordType extends DefaultRecordType>(
       tableIndent,
       expandIcon,
       renderBar,
+      renderInvalidBar,
       renderGroupBar,
       onBarClick,
       tableCollapseAble,
@@ -153,6 +156,7 @@ const GanttComponent = <RecordType extends DefaultRecordType>(
       tableIndent,
       expandIcon,
       renderBar,
+      renderInvalidBar,
       renderGroupBar,
       onBarClick,
       tableCollapseAble,

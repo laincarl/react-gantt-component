@@ -28,6 +28,10 @@ export interface GanttContext<RecordType = DefaultRecordType> {
     barInfo: Gantt.Bar<RecordType>,
     { width, height }: { width: number; height: number }
   ) => React.ReactNode;
+  renderInvalidBar?: (
+    element: React.ReactNode,
+    barInfo: Gantt.Bar<RecordType>
+  ) => React.ReactNode;
   renderGroupBar?: (
     barInfo: Gantt.Bar<RecordType>,
     { width, height }: { width: number; height: number }

@@ -10,9 +10,13 @@ interface TaskBarProps {
 }
 const barH = 8;
 let startX = 0;
-
+const renderInvalidBarDefault = element => element;
 const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
-  const { store, prefixCls } = useContext(Context);
+  const {
+    store,
+    prefixCls,
+    renderInvalidBar = renderInvalidBarDefault,
+  } = useContext(Context);
   const triggerRef = useRef<HTMLDivElement>(null);
   const { translateY, translateX, width, dateTextFormat } = data;
   const [visible, setVisible] = useState(false);
@@ -70,6 +74,7 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
   const reachEdge = usePersistFn((position: 'left' | 'right') => {
     return position === 'left' && store.translateX <= 0;
   });
+
   return (
     <DragResize
       onMouseMove={handleMouseMove}
@@ -99,37 +104,39 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
           transform: `translateY(${top - (rowHeight - barH) / 2}px`,
         }}
       />
-      {visible && (
-        <div
-          className={`${prefixClsInvalidTaskBar}-block`}
-          aria-haspopup="true"
-          aria-expanded="false"
-          style={{
-            left: translateX,
-            width: Math.ceil(width),
-            transform: `translateY(${top}px)`,
-            backgroundColor: '#7B90FF',
-            borderColor: '#7B90FF',
-          }}
-        >
+      {visible &&
+        renderInvalidBar(
           <div
-            className={`${prefixClsInvalidTaskBar}-date`}
+            className={`${prefixClsInvalidTaskBar}-block`}
+            aria-haspopup="true"
+            aria-expanded="false"
             style={{
-              right: Math.ceil(width + 6),
+              left: translateX,
+              width: Math.ceil(width),
+              transform: `translateY(${top}px)`,
+              backgroundColor: '#7B90FF',
+              borderColor: '#7B90FF',
             }}
           >
-            {dateTextFormat(translateX)}
-          </div>
-          <div
-            className={`${prefixClsInvalidTaskBar}-date`}
-            style={{
-              left: Math.ceil(width + 6),
-            }}
-          >
-            {dateTextFormat(translateX + width)}
-          </div>
-        </div>
-      )}
+            <div
+              className={`${prefixClsInvalidTaskBar}-date`}
+              style={{
+                right: Math.ceil(width + 6),
+              }}
+            >
+              {dateTextFormat(translateX)}
+            </div>
+            <div
+              className={`${prefixClsInvalidTaskBar}-date`}
+              style={{
+                left: Math.ceil(width + 6),
+              }}
+            >
+              {dateTextFormat(translateX + width)}
+            </div>
+          </div>,
+          data
+        )}
     </DragResize>
   );
 };
