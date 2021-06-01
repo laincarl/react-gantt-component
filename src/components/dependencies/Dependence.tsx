@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import find from 'lodash/find';
 import Context from '../../context';
-import styles from './Dependence.less';
+import './Dependence.less';
 import { Gantt } from '../../types';
 
 const spaceX = 10;
@@ -84,9 +84,9 @@ const Dependence: React.FC<DependenceProps> = ({ data }) => {
   const endPosition =
     type === 'start_finish' || type === 'finish_finish' ? -1 : 1;
   return (
-    <g stroke="#f87872" className={styles['task-dependency-line']}>
+    <g stroke="#f87872" className="task-dependency-line">
       <path
-        className={styles.line}
+        className="line"
         d={`
           M${start.x},${start.y}
           ${points.map(point => `L${point.x},${point.y}`).join('\n')}
