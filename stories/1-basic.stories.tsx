@@ -46,6 +46,7 @@ const GanttStory = ({ data, ...args }) => (
       onUpdate={async (item) => {
         return true
       }}
+      renderBarThumb={(record) => record.content}
       {...args}
     />
   </div>
