@@ -43,7 +43,9 @@ const GanttStory = ({ data, ...args }) => (
         flex: 1,
         minWidth: 100,
       }]}
-      onUpdate={async (item) => {
+      onUpdate={async (item, startDate, endDate) => {
+        item.startDate = startDate;
+        item.endDate = endDate;
         return true
       }}
       renderBarThumb={(record) => record.content}

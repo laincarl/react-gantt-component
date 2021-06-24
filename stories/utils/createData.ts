@@ -3,6 +3,8 @@ export interface GanttRecord {
   id: string
   name: string
   content: string
+  startDate: string | null,
+  endDate: string | null,
 }
 export default function createData(count: number): GanttProps<GanttRecord>['data'] {
   return Array(count).fill(0).map((_, i) => ({

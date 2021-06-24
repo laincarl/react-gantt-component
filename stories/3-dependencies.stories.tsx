@@ -76,7 +76,9 @@ const GanttStory = ({ data, ...args }) => (
         flex: 1,
         minWidth: 100,
       }]}
-      onUpdate={async () => {
+      onUpdate={async (item, startDate, endDate) => {
+        item.startDate = startDate;
+        item.endDate = endDate;
         return true
       }}
       {...args}
