@@ -56,8 +56,8 @@ const Dependence: React.FC<DependenceProps> = ({ data }) => {
   const { store, barHeight } = useContext(Context);
   const { from, to, type } = data;
   const barList = store.getBarList;
-  const fromBar = find(barList, bar => bar.record.id === from);
-  const toBar = find(barList, bar => bar.record.id === to);
+  const fromBar = find(barList, (bar) => bar.record.id === from);
+  const toBar = find(barList, (bar) => bar.record.id === to);
   if (!fromBar || !toBar) {
     return null;
   }
@@ -89,7 +89,7 @@ const Dependence: React.FC<DependenceProps> = ({ data }) => {
         className={styles.line}
         d={`
           M${start.x},${start.y}
-          ${points.map(point => `L${point.x},${point.y}`).join('\n')}
+          ${points.map((point) => `L${point.x},${point.y}`).join('\n')}
           L${end.x},${end.y}
           `}
         strokeWidth="1"

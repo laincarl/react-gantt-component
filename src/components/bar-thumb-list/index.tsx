@@ -10,7 +10,7 @@ const BarThumbList: React.FC = () => {
   const { count, start } = store.getVisibleRows;
   return (
     <>
-      {barList.slice(start, start + count).map(bar => {
+      {barList.slice(start, start + count).map((bar) => {
         if (store.getTaskBarThumbVisible(bar)) {
           return <TaskBarThumb data={bar} key={bar.key} />;
         }

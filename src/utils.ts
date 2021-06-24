@@ -42,7 +42,7 @@ export function getMaxRange(bar: Gantt.Bar) {
         maxTranslateX = Math.max(translateX + width, maxTranslateX);
       }
       if (current.task.children && current.task.children.length > 0) {
-        current.task.children.forEach(t => {
+        current.task.children.forEach((t) => {
           if (t._bar) {
             temp.push(t._bar);
           }
@@ -58,7 +58,7 @@ export function getMaxRange(bar: Gantt.Bar) {
 }
 const genKey = (() => {
   let key = 0;
-  return function() {
+  return function () {
     return key++;
   };
 })();
@@ -69,7 +69,7 @@ export function transverseData(
 ) {
   const result: Gantt.Item[] = [];
 
-  data.forEach(record => {
+  data.forEach((record) => {
     const item: Gantt.Item = {
       key: genKey(),
       record,

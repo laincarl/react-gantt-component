@@ -43,7 +43,7 @@ const TimeAxis: React.FC = () => {
             transform: `translateX(-${store.translateX}px`,
           }}
         >
-          {majorList.map(item => (
+          {majorList.map((item) => (
             <div
               key={item.key}
               className={`${prefixClsTimeAxis}-major`}
@@ -54,7 +54,7 @@ const TimeAxis: React.FC = () => {
               </div>
             </div>
           ))}
-          {minorList.map(item => (
+          {minorList.map((item) => (
             <div
               key={item.key}
               className={classNames(`${prefixClsTimeAxis}-minor`, {

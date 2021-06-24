@@ -58,7 +58,7 @@ const TimeAxisScaleSelect: React.FC = () => {
                 className={classNames('next-menu')}
                 aria-multiselectable="false"
               >
-                {viewTypeList.map(item => (
+                {viewTypeList.map((item) => (
                   <li
                     key={item.type}
                     role="none"

@@ -8,7 +8,7 @@ const Dependencies: React.FC = () => {
   const { dependencies } = store;
   return (
     <>
-      {dependencies.map(dependence => (
+      {dependencies.map((dependence) => (
         <Dependence key={JSON.stringify(dependence)} data={dependence} />
       ))}
     </>

@@ -58,7 +58,7 @@ const Divider: React.FC = () => {
         <div
           className={`${prefixClsDivider}-icon-wrapper`}
           role="none"
-          onMouseDown={e => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
           onClick={handleClick}
         >
           <i

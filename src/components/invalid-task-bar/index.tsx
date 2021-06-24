@@ -10,7 +10,7 @@ interface TaskBarProps {
 }
 const barH = 8;
 let startX = 0;
-const renderInvalidBarDefault = element => element;
+const renderInvalidBarDefault = (element) => element;
 const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
   const {
     store,
