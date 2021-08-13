@@ -105,6 +105,7 @@ const DragResize: React.FC<DragResizeProps> = ({
     }
   });
   const handleMouseMove = usePersistFn((event: MouseEvent) => {
+    event.preventDefault();
     if (!resizing) {
       setResizing(true);
       if (!clickStart) {
@@ -131,6 +132,7 @@ const DragResize: React.FC<DragResizeProps> = ({
   const handleMouseDown = usePersistFn(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       event.stopPropagation();
+      event.preventDefault();
       if (enableAutoScroll && scroller) {
         autoScroll.start();
       }
