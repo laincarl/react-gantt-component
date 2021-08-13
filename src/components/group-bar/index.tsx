@@ -10,9 +10,11 @@ interface GroupBarProps {
 }
 const height = 8;
 const GroupBar: React.FC<GroupBarProps> = ({ data }) => {
-  const { prefixCls, renderGroupBar } = useContext(Context);
-  const { translateY } = data;
-  const { translateX, width } = getMaxRange(data);
+  const { prefixCls, renderGroupBar, store } = useContext(Context);
+  const { translateY, task } = data;
+  const { translateX, width } = task.groupWidthSelf
+    ? store.getPosition(task.startDate, task.endDate)
+    : getMaxRange(data);
   return (
     <div
       role="none"

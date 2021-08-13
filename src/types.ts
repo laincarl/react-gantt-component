@@ -44,6 +44,7 @@ export namespace Gantt {
     record: Record<RecordType>;
     loading: boolean;
     _group?: boolean;
+    _groupWidthSelf?: boolean;
     _collapsed: boolean;
     _depth: number;
     _index?: number;
@@ -58,6 +59,8 @@ export namespace Gantt {
     content: string;
     collapsed: boolean;
     group?: boolean;
+    /** group使用自身时间做计算 */
+    groupWidthSelf?: boolean;
     children?: Item<RecordType>[];
     _parent?: Item<RecordType>;
     _bar?: Bar<RecordType>;

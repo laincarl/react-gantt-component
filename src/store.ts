@@ -343,6 +343,42 @@ class GanttStore {
     const clientWidth = this.viewWidth;
     return this.pxUnitAmp * clientWidth;
   }
+  getPosition = (startDate?: string, endDate?: string) => {
+    if (!startDate || !endDate) {
+      return {
+        translateX: 0,
+        width: 0,
+      };
+    }
+    const { pxUnitAmp } = this;
+    // 最小宽度
+    const minStamp = 11 * pxUnitAmp;
+    const valid = startDate && endDate;
+    let startAmp = dayjs(startDate || 0)
+      .startOf('day')
+      .valueOf();
+    let endAmp = dayjs(endDate || 0)
+      .endOf('day')
+      .valueOf();
+
+    // 开始结束日期相同默认一天
+    if (Math.abs(endAmp - startAmp) < minStamp) {
+      startAmp = dayjs(startDate || 0)
+        .startOf('day')
+        .valueOf();
+      endAmp = dayjs(endDate || 0)
+        .endOf('day')
+        .add(minStamp, 'millisecond')
+        .valueOf();
+    }
+    const width = valid ? (endAmp - startAmp) / pxUnitAmp : 0;
+    const translateX = valid ? startAmp / pxUnitAmp : 0;
+
+    return {
+      translateX,
+      width,
+    };
+  };
 
   getWidthByDate = (startDate: Dayjs, endDate: Dayjs) =>
     (endDate.valueOf() - startDate.valueOf()) / this.pxUnitAmp;
@@ -689,6 +725,7 @@ class GanttStore {
         dateTextFormat,
         loading: false,
         _group: item.group,
+        _groupWidthSelf: item.groupWidthSelf,
         _collapsed: item.collapsed, // 是否折叠
         _depth: item._depth as number, // 表示子节点深度
         _index: item._index, // 任务下标位置
